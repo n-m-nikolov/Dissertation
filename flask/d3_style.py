@@ -1,6 +1,5 @@
 from flask import Flask, views
 import flask
-
 app = Flask(__name__)
 app.debug = True
 
