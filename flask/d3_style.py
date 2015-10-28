@@ -8,10 +8,11 @@ app = Flask(__name__)
 app.debug = True
 
 
-@app.route('/', methods=['GET', 'POST'])
-def index():
+@app.route('/tokenizer', methods=['GET', 'POST'])
+def tokenizer():
     errors = []
     results = {}
+    punct_results = {}
     sentence = ""
     nopunct = ""
     if request.method == "POST":
@@ -38,9 +39,18 @@ def index():
             text = nltk.Text(tokens)
             nonPunct = re.compile('.*[A-Za-z].*')
             nonPunctText = [w for w in text if nonPunct.match(w)]
-            results = nonPunctText
-    return render_template('tokenize.html', errors=errors, results=results)
+            punct_results = nonPunctText
+    return render_template('tokenize.html', errors=errors, results=results, punct_results=punct_results)
 
+@app.route('/dependency', methods=['GET', 'POST'])
+def dependency():
+    errors = ()
+    results = {}
+    return render_template('dependency.html', errors=errors, results=results)
+
+@app.route('/', methods=['GET', 'POST'])
+def home():
+    return render_template('home.html')
 
 app.run()
 
