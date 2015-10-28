@@ -1,26 +1,33 @@
-from flask import Flask, views
+from flask import Flask, render_template, request
 import flask
+import nltk
+import requests
+
 app = Flask(__name__)
 app.debug = True
 
 
-class View(flask.views.MethodView) :
-    def get(self):
-        return flask.render_template('index.html')
-    def post(self):
-        return "Works!"
-
-class Random(flask.views.MethodView):
-    def get(self):
-        return flask.render_template('random.html')
-
-
-app.add_url_rule('/', view_func=View.as_view('main'), methods=['GET', 'POST'])
-app.add_url_rule('/random', view_func=Random.as_view('random'))
-# @app.route('/index')
-# def hello_world():
-#     return flask.render_template('index.html')
-
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    errors = []
+    results = {}
+    sentence = ""
+    if request.method == "POST":
+        # get sentence that the user has entered
+        try:
+            sentence = request.form['sentence']
+        except BaseException as e:
+            errors.append(
+                "Unable to get Sentence. Please make sure it's valid and try again."
+            )
+            errors.append(e)
+        if sentence:
+            nltk.data.path.append('./nltk_data/')
+            tokens = nltk.word_tokenize(sentence)
+            text = nltk.Text(tokens)
+            results = text
+    return render_template('tokenize.html', errors=errors, results=results)
 
 
 app.run()
+
