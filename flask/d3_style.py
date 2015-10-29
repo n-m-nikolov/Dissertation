@@ -44,21 +44,7 @@ def tokenizer():
 
 @app.route('/dependency', methods=['GET', 'POST'])
 def dependency():
-    errors = []
-    results = {}
-    o = ""
-    option_list = ["Non-projective dependency parsing", "Projective dependency parsing"]
-    try:
-        if request.form['submit'] == 'Select':
-            opted = o
-            return opted
-    except BaseException as e:
-        errors.append(
-        "Unable to get Sentence. Please make sure it's valid and try again."
-        )
-        errors.append(e)
-
-    return render_template('dependency.html', errors=errors, results=results, option_list=option_list)
+    return render_template('dependency.html')
 
 #TO DO: Create separate pages for selecting a grammar and for parsing with the selected grammar
 
@@ -66,5 +52,12 @@ def dependency():
 def home():
     return render_template('home.html')
 
+@app.route('/dependency/non_projective', methods=['GET', 'POST'])
+def non_projective():
+        return render_template('non_projective.html')
+
+@app.route('/dependency/projective', methods=['GET', 'POST'])
+def projective():
+        return render_template('projective.html')
 app.run()
 
