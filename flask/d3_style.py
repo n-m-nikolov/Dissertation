@@ -54,10 +54,51 @@ def home():
 
 @app.route('/dependency/non_projective', methods=['GET', 'POST'])
 def non_projective():
-        return render_template('non_projective.html')
+    errors = []
+    results = {}
+    sentence = ""
+    if request.method == "POST":
+        # get sentence that the user has entered
+        try:
+            if 'sentence' in request.form.keys():
+                sentence = request.form['sentence']
+        except BaseException as e:
+            errors.append(
+                "Unable to get Sentence. Please make sure it's valid and try again."
+            )
+            errors.append(e)
+           # check the form with: errors.append(request.form)
+        if sentence:
+            nltk.data.path.append('./nltk_data/')
+            tokens = nltk.word_tokenize(sentence)
+            text = nltk.Text(tokens)
+            results = text
+
+    return render_template('non_projective.html', errors=errors, results=results)
 
 @app.route('/dependency/projective', methods=['GET', 'POST'])
 def projective():
-        return render_template('projective.html')
+    errors = []
+    results = {}
+    sentence = ""
+    if request.method == "POST":
+        # get sentence that the user has entered
+        try:
+            if 'sentence' in request.form.keys():
+                sentence = request.form['sentence']
+        except BaseException as e:
+            errors.append(
+                "Unable to get Sentence. Please make sure it's valid and try again."
+            )
+            errors.append(e)
+           # check the form with: errors.append(request.form)
+        if sentence:
+            nltk.data.path.append('./nltk_data/')
+            tokens = nltk.word_tokenize(sentence)
+            text = nltk.Text(tokens)
+            results = text
+
+    return render_template('projective.html', errors=errors, results=results)
+
 app.run()
 
