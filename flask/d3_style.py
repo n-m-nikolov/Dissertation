@@ -95,7 +95,9 @@ def projective():
         if sentence:
             nltk.data.path.append('./nltk_data/')
             tokens = nltk.word_tokenize(sentence)
-            text = nltk.Text(tokens)
+            parser = nltk.NonprojectiveDependencyParser()
+            parsedSent = nltk.NonprojectiveDependencyParser.parse(tokens, )
+            text = nltk.Text(parsedSent)
             results = text
 
     return render_template('projective.html', errors=errors, results=results)
