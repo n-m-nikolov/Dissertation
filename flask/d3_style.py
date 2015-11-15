@@ -57,6 +57,7 @@ def non_projective():
     errors = []
     results = {}
     sentence = ""
+    rules = {}
     if request.method == "POST":
         # get sentence that the user has entered
         try:
@@ -68,13 +69,18 @@ def non_projective():
             )
             errors.append(e)
            # check the form with: errors.append(request.form)
-        if sentence:
-            nltk.data.path.append('./nltk_data/')
-            tokens = nltk.word_tokenize(sentence)
-            text = nltk.Text(tokens)
-            results = text
 
-    return render_template('non_projective.html', errors=errors, results=results)
+        nltk.data.path.append('./nltk_data/')
+        grammarPrint = ["\'taught\' -> \'play\' | \'man\'", "\'man\' -> \'the\'", "\'play\' -> \'golf\' | \'dog\' | \'to\'", "\'dog\' -> \'his\'"  ]
+        grammar = nltk.DependencyGrammar.fromstring("\n".join(grammarPrint))
+        dp = nltk.NonprojectiveDependencyParser(grammar)
+        g, = dp.parse(['the', 'man', 'taught', 'his', 'dog', 'to', 'play', 'golf'])
+        tokens = nltk.word_tokenize(sentence)
+        text = nltk.Text(tokens)
+        results = g.root['word']
+        rules = grammarPrint
+
+    return render_template('non_projective.html', errors=errors, results=results, rules=rules)
 
 @app.route('/dependency/projective', methods=['GET', 'POST'])
 def projective():

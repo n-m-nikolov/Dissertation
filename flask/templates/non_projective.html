@@ -19,10 +19,9 @@
 
             <form role="form" method="POST" action="">
                 <div class="form-group">
-                    <input type="text" name="sentence" class="form-control" id="sentence-box"
-                           placeholder="Enter Sentence..." style="max-width: 300px;">
+                   <h2><b>The man thought his dog to play golf</b></h2>
                 </div>
-                <button type="submit" class="btn btn-default">Tokenize</button>
+                <button type="submit" class="btn btn-default">Parse</button>
             </form>
             <br>
 
@@ -34,25 +33,22 @@
             <br>
         </div>
         <div class="col-sm-5 col-sm-offset-1">
-            {% if results %}
-                <h2>Tokens</h2>
+            {% if rules %}
+                <h2>Rules</h2>
                 <br>
                 <div id="results">
-                    <table class="table table-striped" style="max-width: 150px;">
-                        <thead>
-                        <tr>
-                            <th>Tokens</th>
-                        </tr>
-                        </thead>
-                        {% for result in results %}
+                    <h4>Dependency Grammar with 7 productions</h4>
+                    <table class="table table-striped" style="max-width: 250px;">
+
+                        {% for rule in rules %}
                             <tr>
-                                <td>{{ result }}</td>
+                                <td>{{ rule }}</td>
                             </tr>
                         {% endfor %}
                     </table>
                 </div>
             {% endif %}
-        {% if punct_results %}
+        {% if results %}
                 <h2>Parsed Sentence</h2>
                 <br>
                 <div id="results">
@@ -62,7 +58,7 @@
                             <th>Tokens</th>
                         </tr>
                         </thead>
-                        {% for result in punct_results %}
+                        {% for result in results %}
                             <tr>
                                 <td>{{ result }}</td>
                             </tr>
