@@ -1,4 +1,6 @@
-from flask import Flask, render_template, request
+import json
+import os
+from flask import Flask, render_template, request, url_for
 import flask
 import nltk
 import requests
@@ -6,6 +8,7 @@ import re
 
 app = Flask(__name__)
 app.debug = True
+
 
 
 @app.route('/tokenizer', methods=['GET', 'POST'])
@@ -51,6 +54,11 @@ def dependency():
 @app.route('/', methods=['GET', 'POST'])
 def home():
     return render_template('home.html')
+
+@app.route('/projective_tree', methods=['GET', 'POST'])
+def proj_tree():
+    return render_template('projective_tree.html')
+
 
 @app.route('/dependency/non_projective', methods=['GET', 'POST'])
 def non_projective():
@@ -117,4 +125,5 @@ def projective():
     return render_template('projective.html', errors=errors, results=results, rules=rules, nodes = nodes)
 
 app.run()
+url_for('static', filename='graph.json')
 
