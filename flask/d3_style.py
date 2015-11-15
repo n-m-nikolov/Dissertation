@@ -88,8 +88,10 @@ def non_projective():
 @app.route('/dependency/projective', methods=['GET', 'POST'])
 def projective():
     errors = []
-    results = {}
+    results = []
     sentence = ""
+    rules = {}
+    nodes = []
     if request.method == "POST":
         # get sentence that the user has entered
         try:
@@ -101,15 +103,20 @@ def projective():
             )
             errors.append(e)
            # check the form with: errors.append(request.form)
-        if sentence:
-            nltk.data.path.append('./nltk_data/')
-            tokens = nltk.word_tokenize(sentence)
-            parser = nltk.NonprojectiveDependencyParser()
-            parsedSent = nltk.NonprojectiveDependencyParser.parse(tokens, )
-            text = nltk.Text(parsedSent)
-            results = text
 
-    return render_template('projective.html', errors=errors, results=results)
+        nltk.data.path.append('./nltk_data/')
+        grammarPrint = ["\'taught\' -> \'play\' | \'man\'", "\'man\' -> \'the\'", "\'play\' -> \'golf\' | \'dog\' | \'to\'", "\'dog\' -> \'his\'"  ]
+        grammar = nltk.DependencyGrammar.fromstring("\n".join(grammarPrint))
+        dp = nltk.NonprojectiveDependencyParser(grammar)
+        g, = dp.parse(['the', 'man', 'taught', 'his', 'dog', 'to', 'play', 'golf'])
+        for _, node in sorted(g.nodes.items()):
+            if node['word'] is not None:
+                nodes.append('{address} {word}: {d}'.format(d=node['deps'][''], **node))
+
+        rules = grammarPrint
+        results.append(g.tree())
+
+    return render_template('projective.html', errors=errors, results=results, rules=rules, nodes = nodes)
 
 app.run()
 
