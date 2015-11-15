@@ -81,6 +81,7 @@ def non_projective():
                 nodes.append('{address} {word}: {d}'.format(d=node['deps'][''], **node))
 
         rules = grammarPrint
+        results.append(g.tree())
 
     return render_template('non_projective.html', errors=errors, results=results, rules=rules, nodes = nodes)
 
