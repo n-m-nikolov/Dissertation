@@ -34,7 +34,7 @@
         </div>
         <div class="col-sm-5 col-sm-offset-1">
             {% if rules %}
-                <h2>Rules</h2>
+                <h2>Information</h2>
                 <br>
                 <div id="results">
                     <h4>Dependency Grammar with 7 productions</h4>
@@ -48,19 +48,14 @@
                     </table>
                 </div>
             {% endif %}
-        {% if results %}
-                <h2>Parsed Sentence</h2>
+        {% if nodes %}
+                <h2>Nodes</h2>
                 <br>
                 <div id="results">
                     <table class="table table-striped" style="max-width: 150px;">
-                        <thead>
-                        <tr>
-                            <th>Tokens</th>
-                        </tr>
-                        </thead>
-                        {% for result in results %}
+                        {% for node in nodes %}
                             <tr>
-                                <td>{{ result }}</td>
+                                <td>{{ node }}</td>
                             </tr>
                         {% endfor %}
                     </table>

@@ -55,9 +55,10 @@ def home():
 @app.route('/dependency/non_projective', methods=['GET', 'POST'])
 def non_projective():
     errors = []
-    results = {}
+    results = []
     sentence = ""
     rules = {}
+    nodes = []
     if request.method == "POST":
         # get sentence that the user has entered
         try:
@@ -75,12 +76,13 @@ def non_projective():
         grammar = nltk.DependencyGrammar.fromstring("\n".join(grammarPrint))
         dp = nltk.NonprojectiveDependencyParser(grammar)
         g, = dp.parse(['the', 'man', 'taught', 'his', 'dog', 'to', 'play', 'golf'])
-        tokens = nltk.word_tokenize(sentence)
-        text = nltk.Text(tokens)
-        results = g.root['word']
+        for _, node in sorted(g.nodes.items()):
+            if node['word'] is not None:
+                nodes.append('{address} {word}: {d}'.format(d=node['deps'][''], **node))
+
         rules = grammarPrint
 
-    return render_template('non_projective.html', errors=errors, results=results, rules=rules)
+    return render_template('non_projective.html', errors=errors, results=results, rules=rules, nodes = nodes)
 
 @app.route('/dependency/projective', methods=['GET', 'POST'])
 def projective():
