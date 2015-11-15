@@ -105,16 +105,14 @@ def projective():
            # check the form with: errors.append(request.form)
 
         nltk.data.path.append('./nltk_data/')
-        grammarPrint = ["\'taught\' -> \'play\' | \'man\'", "\'man\' -> \'the\'", "\'play\' -> \'golf\' | \'dog\' | \'to\'", "\'dog\' -> \'his\'"  ]
+        grammarPrint = ["\'fell\' -> \'price\' | \'stock\'", "\'price\' -> \'of\' \'the\'", "\'of\' -> \'stock\'", "\'stock' -> 'the\'" ]
         grammar = nltk.DependencyGrammar.fromstring("\n".join(grammarPrint))
-        dp = nltk.NonprojectiveDependencyParser(grammar)
-        g, = dp.parse(['the', 'man', 'taught', 'his', 'dog', 'to', 'play', 'golf'])
-        for _, node in sorted(g.nodes.items()):
-            if node['word'] is not None:
-                nodes.append('{address} {word}: {d}'.format(d=node['deps'][''], **node))
+        dp = nltk.ProjectiveDependencyParser(grammar)
+        for t in sorted(dp.parse(['the', 'price', 'of', 'the', 'stock', 'fell'])):
+             results.append(t)
 
         rules = grammarPrint
-        results.append(g.tree())
+
 
     return render_template('projective.html', errors=errors, results=results, rules=rules, nodes = nodes)
 
