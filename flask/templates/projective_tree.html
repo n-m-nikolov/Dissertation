@@ -26,7 +26,7 @@
 <body>
 <script src="//d3js.org/d3.v3.min.js"></script>
 <script>
-
+//TO DO: FIX THE ANIMATIONS OF THE VERTICAL TREE
 var margin = {top: 20, right: 120, bottom: 20, left: 120},
     width = 960 - margin.right - margin.left,
     height = 800 - margin.top - margin.bottom;
@@ -39,7 +39,8 @@ var tree = d3.layout.tree()
     .size([height, width]);
 
 var diagonal = d3.svg.diagonal()
-    .projection(function(d) { return [d.y, d.x]; });
+        //SWAPPED X AND Y TO DO return them if not working
+    .projection(function(d) { return [d.x, d.y]; });
 
 var svg = d3.select("body").append("svg")
     .attr("width", width + margin.right + margin.left)
@@ -75,7 +76,8 @@ function update(source) {
       links = tree.links(nodes);
 
   // Normalize for fixed-depth.
-  nodes.forEach(function(d) { d.y = d.depth * 180; });
+    //changed value from 180 to 100 TO DO: return them back to normal
+  nodes.forEach(function(d) { d.y = d.depth * 100; });
 
   // Update the nodes…
   var node = svg.selectAll("g.node")
@@ -84,7 +86,8 @@ function update(source) {
   // Enter any new nodes at the parent's previous position.
   var nodeEnter = node.enter().append("g")
       .attr("class", "node")
-      .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
+      // SWAPPED x0 and y0 to make it vertical TO DO: return them if not worikng
+      .attr("transform", function(d) { return "translate(" + source.x0 + "," + source.y0 + ")"; })
       .on("click", click);
 
   nodeEnter.append("circle")
@@ -101,7 +104,8 @@ function update(source) {
   // Transition nodes to their new position.
   var nodeUpdate = node.transition()
       .duration(duration)
-      .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
+          // SWAPPED x0 and y0 to make it vertical TO DO: return them if not worikng
+      .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
 
   nodeUpdate.select("circle")
       .attr("r", 4.5)
@@ -113,7 +117,8 @@ function update(source) {
   // Transition exiting nodes to the parent's new position.
   var nodeExit = node.exit().transition()
       .duration(duration)
-      .attr("transform", function(d) { return "translate(" + source.y + "," + source.x + ")"; })
+          // SWAPPED x and y to make it vertical TO DO: return them if not worikng
+      .attr("transform", function(d) { return "translate(" + source.x + "," + source.y + ")"; })
       .remove();
 
   nodeExit.select("circle")
@@ -149,9 +154,10 @@ function update(source) {
       .remove();
 
   // Stash the old positions for transition.
+    //SWAPPED X AND WY ind d.y and d.x TO DO: return them back if not working
   nodes.forEach(function(d) {
-    d.x0 = d.x;
-    d.y0 = d.y;
+    d.x0 = d.y;
+    d.y0 = d.x;
   });
 }
 
