@@ -5,78 +5,272 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <style>
-        .container {
-            max-width: 1000px;
+
+        .node {
+            cursor: pointer;
         }
+
+        .node circle {
+            fill: #fff;
+            stroke: steelblue;
+            stroke-width: 1.5px;
+        }
+
+        .node text {
+            font: 10px sans-serif;
+        }
+
+        .link {
+            fill: none;
+            stroke: #ccc;
+            stroke-width: 1.5px;
+        }
+
     </style>
 </head>
 <body>
 <div class="container">
-    <div class="row">
-        <div class="col-sm-5 col-sm-offset-1">
-            <h1>Non-Projective Dependency Parser</h1>
-            <br>
+<div class="row">
+<div class="col-sm-5 col-sm-offset-1">
+<h1>Non-Projective Dependency Parser</h1>
+<br>
 
-            <form role="form" method="POST" action="">
-                <div class="form-group">
-                   <h2><b>The man thought his dog to play golf.</b></h2>
-                </div>
-                <button type="submit" class="btn btn-default">Parse</button>
-            </form>
-            <br>
-            <br>
-            {% for error in errors %}
-                <h4>{{ error }}</h4>
-            {% endfor %}
-            <br>
-        {% if results %}
-                <br>
-                <div id="results">
-                    <h4>Result From Parse</h4>
-                    <br>
-                    <table class="table table-striped" style="max-width: 350px;">
-
-                        {% for result in results %}
-                            <tr>
-                                <td>{{ result }}</td>
-                            </tr>
-                        {% endfor %}
-                    </table>
-                </div>
-            {% endif %}
-
-        </div>
-        <div class="col-sm-5 col-sm-offset-1">
-            {% if rules %}
-                <h2>Information</h2>
-                <br>
-                <div id="results">
-                    <h4>Dependency Grammar with 7 productions</h4>
-                    <table class="table table-striped" style="max-width: 250px;">
-
-                        {% for rule in rules %}
-                            <tr>
-                                <td>{{ rule }}</td>
-                            </tr>
-                        {% endfor %}
-                    </table>
-                </div>
-            {% endif %}
-        {% if nodes %}
-                <br>
-                <h4>Nodes</h4>
-                <div id="results">
-                    <table class="table table-striped" style="max-width: 150px;">
-                        {% for node in nodes %}
-                            <tr>
-                                <td>{{ node }}</td>
-                            </tr>
-                        {% endfor %}
-                    </table>
-                </div>
-            {% endif %}
-        </div>
+<form role="form" method="POST" action="">
+    <div class="form-group">
+        <h2><b>The man thought his dog to play golf.</b></h2>
     </div>
+    <button type="submit" class="btn btn-default">Parse</button>
+</form>
+<br>
+<script src="//d3js.org/d3.v3.min.js"></script>
+<script>
+    //TO DO: FIX THE ANIMATIONS OF THE VERTICAL TREE
+    var margin = {top: 20, right: 120, bottom: 20, left: 120},
+            width = 960 - margin.right - margin.left,
+            height = 800 - margin.top - margin.bottom;
+
+    var i = 0,
+            duration = 750,
+            root;
+
+    var tree = d3.layout.tree()
+            .size([height, width]);
+
+    var diagonal = d3.svg.diagonal()
+        //SWAPPED X AND Y TO DO return them if not working
+            .projection(function (d) {
+                return [d.x, d.y];
+            });
+
+    var svg = d3.select("body").append("svg")
+            .attr("width", width + margin.right + margin.left)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    d3.json("/static/graph.json", function (error, flare) {
+        if (error) throw error;
+
+        root = flare;
+        root.x0 = height / 2;
+        root.y0 = 0;
+
+        function collapse(d) {
+            if (d.children) {
+                d._children = d.children;
+                d._children.forEach(collapse);
+                d.children = null;
+            }
+        }
+
+        root.children.forEach(collapse);
+        update(root);
+    });
+
+    d3.select(self.frameElement).style("height", "800px");
+
+    function update(source) {
+
+        // Compute the new tree layout.
+        var nodes = tree.nodes(root).reverse(),
+                links = tree.links(nodes);
+
+        // Normalize for fixed-depth.
+        //changed value from 180 to 100 TO DO: return them back to normal
+        nodes.forEach(function (d) {
+            d.y = d.depth * 100;
+        });
+
+        // Update the nodes…
+        var node = svg.selectAll("g.node")
+                .data(nodes, function (d) {
+                    return d.id || (d.id = ++i);
+                });
+
+        // Enter any new nodes at the parent's previous position.
+        var nodeEnter = node.enter().append("g")
+                .attr("class", "node")
+            // SWAPPED x0 and y0 to make it vertical TO DO: return them if not worikng
+                .attr("transform", function (d) {
+                    return "translate(" + source.x0 + "," + source.y0 + ")";
+                })
+                .on("click", click);
+
+        nodeEnter.append("circle")
+                .attr("r", 1e-6)
+                .style("fill", function (d) {
+                    return d._children ? "lightsteelblue" : "#fff";
+                });
+
+        nodeEnter.append("text")
+                .attr("x", function (d) {
+                    return d.children || d._children ? -10 : 10;
+                })
+                .attr("dy", ".35em")
+                .attr("text-anchor", function (d) {
+                    return d.children || d._children ? "end" : "start";
+                })
+                .text(function (d) {
+                    return d.name;
+                })
+                .style("fill-opacity", 1e-6);
+
+        // Transition nodes to their new position.
+        var nodeUpdate = node.transition()
+                .duration(duration)
+            // SWAPPED x0 and y0 to make it vertical TO DO: return them if not worikng
+                .attr("transform", function (d) {
+                    return "translate(" + d.x + "," + d.y + ")";
+                });
+
+        nodeUpdate.select("circle")
+                .attr("r", 4.5)
+                .style("fill", function (d) {
+                    return d._children ? "lightsteelblue" : "#fff";
+                });
+
+        nodeUpdate.select("text")
+                .style("fill-opacity", 1);
+
+        // Transition exiting nodes to the parent's new position.
+        var nodeExit = node.exit().transition()
+                .duration(duration)
+            // SWAPPED x and y to make it vertical TO DO: return them if not worikng
+                .attr("transform", function (d) {
+                    return "translate(" + source.x + "," + source.y + ")";
+                })
+                .remove();
+
+        nodeExit.select("circle")
+                .attr("r", 1e-6);
+
+        nodeExit.select("text")
+                .style("fill-opacity", 1e-6);
+
+        // Update the links…
+        var link = svg.selectAll("path.link")
+                .data(links, function (d) {
+                    return d.target.id;
+                });
+
+        // SWAPPED x and y to make it vertical TO DO: return them if not worikng
+        // Enter any new links at the parent's previous position.
+        link.enter().insert("path", "g")
+                .attr("class", "link")
+                .attr("d", function (d) {
+                    var o = {x: source.y0, y: source.x0};
+                    return diagonal({source: o, target: o});
+                });
+
+        // Transition links to their new position.
+        link.transition()
+                .duration(duration)
+                .attr("d", diagonal);
+
+        // Transition exiting nodes to the parent's new position.
+        // SWAPPED x and y to make it vertical TO DO: return them if not worikng
+        link.exit().transition()
+                .duration(duration)
+                .attr("d", function (d) {
+                    var o = {x: source.y, y: source.x};
+                    return diagonal({source: o, target: o});
+                })
+                .remove();
+
+        // Stash the old positions for transition.
+        //SWAPPED X AND WY ind d.y and d.x TO DO: return them back if not working
+        nodes.forEach(function (d) {
+            d.x0 = d.y;
+            d.y0 = d.x;
+        });
+    }
+
+    // Toggle children on click.
+    function click(d) {
+        if (d.children) {
+            d._children = d.children;
+            d.children = null;
+        } else {
+            d.children = d._children;
+            d._children = null;
+        }
+        update(d);
+    }
+
+</script>
+<br>
+{% for error in errors %}
+    <h4>{{ error }}</h4>
+{% endfor %}
+<br>
+{% if results %}
+    <br>
+    <div id="results">
+        <h4>Result From Parse</h4>
+        <br>
+        <table class="table table-striped" style="max-width: 350px;">
+
+            {% for result in results %}
+                <tr>
+                    <td>{{ result }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endif %}
+
+</div>
+<div class="col-sm-5 col-sm-offset-1">
+    {% if rules %}
+        <h2>Information</h2>
+        <br>
+        <div id="results">
+            <h4>Dependency Grammar with 7 productions</h4>
+            <table class="table table-striped" style="max-width: 250px;">
+
+                {% for rule in rules %}
+                    <tr>
+                        <td>{{ rule }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    {% endif %}
+    {% if nodes %}
+        <br>
+        <h4>Nodes</h4>
+        <div id="results">
+            <table class="table table-striped" style="max-width: 150px;">
+                {% for node in nodes %}
+                    <tr>
+                        <td>{{ node }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    {% endif %}
+</div>
+</div>
 </div>
 <br><br>
 </body>

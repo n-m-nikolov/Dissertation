@@ -125,5 +125,5 @@ def projective():
     return render_template('projective.html', errors=errors, results=results, rules=rules, nodes = nodes)
 
 app.run()
-url_for('static', filename='graph.json')
-
+url_for('static', filename='projective_tree.json')
+url_for('static', filename='non_projective_tree.json')

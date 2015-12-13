@@ -1,0 +1,19 @@
+{
+     "name": "V: \"fell\"",
+     "children": [
+      {
+       "name": "N: \"price\"",
+       "children": [
+         {"name": "D: \"the\"", "size": 6314}
+       ]
+      },
+         {
+        "name": "N: \"stock\"",
+         "children": [
+             {"name": "D: \"of\"", "size": 4461},
+             {"name": "D: \"the\"", "size": 6314}
+         ]
+         }
+        ]
+
+}
