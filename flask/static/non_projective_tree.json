@@ -1,19 +1,42 @@
 {
-     "name": "V: \"fell\"",
-     "children": [
-      {
-       "name": "N: \"price\"",
-       "children": [
-         {"name": "D: \"the\"", "size": 6314}
-       ]
-      },
-         {
-        "name": "N: \"stock\"",
-         "children": [
-             {"name": "D: \"of\"", "size": 4461},
-             {"name": "D: \"the\"", "size": 6314}
-         ]
-         }
-        ]
+    "name": "V: \"taught\"",
+    "children": [
+        {
+            "name": "V: \"play\"",
+            "children": [
+                {
+                    "name": "N: \"golf\"",
+                    "size": 6314
+                },
+                {
+                    "name": "D: \"to\"",
+                    "size": 6314
+                },
+                {
+                    "name": "N: \"dog\"",
+                    "children": [
+                        {
+                            "name": "D: \"his\"",
+                            "size": 6314
+                        }
+                    ]
+                }
+
+            ]
+        },
+        {
+            "name": "N: \"man\"",
+            "children": [
+                {
+                    "name": "D: \"of\"",
+                    "size": 4461
+                },
+                {
+                    "name": "D: \"the\"",
+                    "size": 6314
+                }
+            ]
+        }
+    ]
 
 }

@@ -68,7 +68,7 @@
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    d3.json("/static/graph.json", function (error, flare) {
+    d3.json("/static/non_projective_tree.json", function (error, flare) {
         if (error) throw error;
 
         root = flare;
@@ -275,3 +275,5 @@
 <br><br>
 </body>
 </html>
+
+
