@@ -96,7 +96,7 @@ def non_projective():
         rules = grammarPrint
         results.append(g.tree())
 
-    return render_template('non_projective.html', errors=errors, results=results, rules=rules, nodes = nodes)
+    return render_template('non_projective_tree_version.html', errors=errors, results=results, rules=rules, nodes = nodes)
 
 @app.route('/dependency/projective_tree_version', methods=['GET', 'POST'])
 def projective():
@@ -127,7 +127,39 @@ def projective():
         rules = grammarPrint
 
 
-    return render_template('projective.html', errors=errors, results=results, rules=rules, nodes = nodes)
+    return render_template('projective_tree_version.html', errors=errors, results=results, rules=rules, nodes = nodes)
+
+@app.route('/dependency/projective_graph', methods=['GET', 'POST'])
+def projective_graph():
+    errors = []
+    results = []
+    sentence = ""
+    rules = {}
+    nodes = []
+    if request.method == "POST":
+        # get sentence that the user has entered
+        try:
+            if 'sentence' in request.form.keys():
+                sentence = request.form['sentence']
+        except BaseException as e:
+            errors.append(
+                "Unable to get Sentence. Please make sure it's valid and try again."
+            )
+            errors.append(e)
+           # check the form with: errors.append(request.form)
+
+        nltk.data.path.append('./nltk_data/')
+        grammarPrint = ["\'fell\' -> \'price\' | \'stock\'", "\'price\' -> \'of\' \'the\'", "\'of\' -> \'stock\'", "\'stock' -> 'the\'" ]
+        grammar = nltk.DependencyGrammar.fromstring("\n".join(grammarPrint))
+        dp = nltk.ProjectiveDependencyParser(grammar)
+        for t in sorted(dp.parse(['the', 'price', 'of', 'the', 'stock', 'fell'])):
+             results.append(t)
+
+        rules = grammarPrint
+
+
+    return render_template('projective_graph.html', errors=errors, results=results, rules=rules, nodes = nodes)
+
 
 app.run()
 url_for('static', filename='projective_tree.json')
