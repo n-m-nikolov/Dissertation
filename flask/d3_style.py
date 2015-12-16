@@ -1,6 +1,7 @@
 import json
 import os
-from flask import Flask, render_template, request, url_for
+from flask import Flask, render_template, request, url_for, redirect, send_from_directory
+from werkzeug.utils import secure_filename
 import flask
 import nltk
 import requests
@@ -11,6 +12,8 @@ from nltk.parse import (
                         ProjectiveDependencyParser,
                         NonprojectiveDependencyParser,
                         )
+
+
 app = Flask(__name__)
 app.debug = True
 
@@ -159,9 +162,25 @@ def projective_graph():
 
 
     return render_template('projective_graph.html', errors=errors, results=results, rules=rules, nodes = nodes)
+#CREDIT: http://code.runnable.com/UiPcaBXaxGNYAAAL/how-to-upload-a-file-to-the-server-in-flask-for-python
+#FOR UPLOADING FILES
+
+# This is the path to the upload directory
+app.config['UPLOAD_FOLDER'] = 'C:/dissertation/Dissertation/flask/uploads'
+# These are the extension that we are accepting to be uploaded
+app.config['ALLOWED_EXTENSIONS'] = set(['txt', 'json'])
+
+# For a given file, return whether it's an allowed type or not
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
+
+@app.route('/upload', methods=['GET', 'POST'])
+def render_upload():
+    return render_template('upload.html')
 
 # Route that will process the file upload
-@app.route('/upload', methods=['POST'])
+@app.route('/uploaded', methods=['POST'])
 def upload():
     # Get the name of the uploaded file
     file = request.files['file']
@@ -176,6 +195,15 @@ def upload():
         # will basicaly show on the browser the uploaded file
         return redirect(url_for('uploaded_file',
                                 filename=filename))
+
+# This route is expecting a parameter containing the name
+# of a file. Then it will locate that file on the upload
+# directory and show it on the browser, so if the user uploads
+# an image, that image is going to be show after the upload
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'],
+                               filename)
 app.run()
 url_for('static', filename='projective_tree.json')
 url_for('static', filename='non_projective_tree.json')
