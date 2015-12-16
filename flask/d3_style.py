@@ -5,7 +5,12 @@ import flask
 import nltk
 import requests
 import re
-
+from nltk.grammar import DependencyGrammar
+from nltk.parse import (
+                        DependencyGraph,
+                        ProjectiveDependencyParser,
+                        NonprojectiveDependencyParser,
+                        )
 app = Flask(__name__)
 app.debug = True
 
@@ -60,7 +65,7 @@ def proj_tree():
     return render_template('projective_tree.html')
 
 
-@app.route('/dependency/non_projective', methods=['GET', 'POST'])
+@app.route('/dependency/non_projective_tree_version', methods=['GET', 'POST'])
 def non_projective():
     errors = []
     results = []
@@ -93,7 +98,7 @@ def non_projective():
 
     return render_template('non_projective.html', errors=errors, results=results, rules=rules, nodes = nodes)
 
-@app.route('/dependency/projective', methods=['GET', 'POST'])
+@app.route('/dependency/projective_tree_version', methods=['GET', 'POST'])
 def projective():
     errors = []
     results = []
