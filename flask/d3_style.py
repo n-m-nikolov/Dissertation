@@ -155,6 +155,14 @@ def projective_graph():
         grammarPrint = ["\'fell\' -> \'price\' | \'stock\'", "\'price\' -> \'of\' \'the\'", "\'of\' -> \'stock\'", "\'stock' -> 'the\'" ]
         grammar = nltk.DependencyGrammar.fromstring("\n".join(grammarPrint))
         dp = nltk.ProjectiveDependencyParser(grammar)
+        conll = send_from_directory(app.config['UPLOAD_FOLDER'], 'treebank_data.txt')
+
+        text = open(app.config['UPLOAD_FOLDER']+'treebank_data.txt', 'r')
+        #errors.append(text)
+        for line in text:
+            print(line.strip())
+        text.close()
+
         for t in sorted(dp.parse(['the', 'price', 'of', 'the', 'stock', 'fell'])):
              results.append(t)
 
@@ -166,7 +174,7 @@ def projective_graph():
 #FOR UPLOADING FILES
 
 # This is the path to the upload directory
-app.config['UPLOAD_FOLDER'] = 'C:/dissertation/Dissertation/flask/uploads'
+app.config['UPLOAD_FOLDER'] = 'C:/dissertation/Dissertation/flask/uploads/'
 # These are the extension that we are accepting to be uploaded
 app.config['ALLOWED_EXTENSIONS'] = set(['txt', 'json'])
 
