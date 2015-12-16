@@ -160,7 +160,22 @@ def projective_graph():
 
     return render_template('projective_graph.html', errors=errors, results=results, rules=rules, nodes = nodes)
 
-
+# Route that will process the file upload
+@app.route('/upload', methods=['POST'])
+def upload():
+    # Get the name of the uploaded file
+    file = request.files['file']
+    # Check if the file is one of the allowed types/extensions
+    if file and allowed_file(file.filename):
+        # Make the filename safe, remove unsupported chars
+        filename = secure_filename(file.filename)
+        # Move the file form the temporal folder to
+        # the upload folder we setup
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        # Redirect the user to the uploaded_file route, which
+        # will basicaly show on the browser the uploaded file
+        return redirect(url_for('uploaded_file',
+                                filename=filename))
 app.run()
 url_for('static', filename='projective_tree.json')
 url_for('static', filename='non_projective_tree.json')
