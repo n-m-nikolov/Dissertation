@@ -152,9 +152,11 @@ def projective_graph():
             )
             errors.append(e)
            # check the form with: errors.append(request.form)
-
+        #folder for ntlk
         nltk.data.path.append('./nltk_data/')
+        #code for TREE implementation, grammar rules to be printed
         grammarPrint = ["\'fell\' -> \'price\' | \'stock\'", "\'price\' -> \'of\' \'the\'", "\'of\' -> \'stock\'", "\'stock' -> 'the\'" ]
+        #the grammar rules for nltk
         grammar_rules = nltk.DependencyGrammar.fromstring("\n".join(grammarPrint))
         dp = nltk.ProjectiveDependencyParser(grammar_rules)
 
