@@ -141,6 +141,7 @@ def projective_graph():
     nodes = []
     grammar = ""
     tags = []
+    words = []  #words extracted from the graph
     if request.method == "POST":
         # get sentence that the user has entered
         try:
@@ -167,9 +168,11 @@ def projective_graph():
         grammar = grammar[3:-3]
         dg = DependencyGraph(grammar)
         for node in dg.nodes:                       #For each node in the graph aquire the needed information
-            tags.append(dg.nodes[node]['tag'])
+            tags.append(dg.nodes[node]['tag'])      #tags
+            words.append(dg.nodes[node]['word'])    #words
+
         text.close()
-        print(tags)
+        print(words)
         for t in sorted(dp.parse(['the', 'price', 'of', 'the', 'stock', 'fell'])):
              results.append(t)
 
