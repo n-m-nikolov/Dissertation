@@ -139,6 +139,8 @@ def projective_graph():
     sentence = ""
     rules = {}
     nodes = []
+    grammar = ""
+    tags = []
     if request.method == "POST":
         # get sentence that the user has entered
         try:
@@ -153,20 +155,23 @@ def projective_graph():
 
         nltk.data.path.append('./nltk_data/')
         grammarPrint = ["\'fell\' -> \'price\' | \'stock\'", "\'price\' -> \'of\' \'the\'", "\'of\' -> \'stock\'", "\'stock' -> 'the\'" ]
-        grammar = nltk.DependencyGrammar.fromstring("\n".join(grammarPrint))
-        dp = nltk.ProjectiveDependencyParser(grammar)
-        conll = send_from_directory(app.config['UPLOAD_FOLDER'], 'treebank_data.txt')
+        grammar_rules = nltk.DependencyGrammar.fromstring("\n".join(grammarPrint))
+        dp = nltk.ProjectiveDependencyParser(grammar_rules)
 
         text = open(app.config['UPLOAD_FOLDER']+'treebank_data.txt', 'r')
         #errors.append(text)
         for line in text:
-            print(line.strip())
+            grammar = grammar + line
+        grammar = grammar[3:-3]
+        dg = DependencyGraph(grammar)
+        for node in dg.nodes:                       #For each node in the graph aquire the needed information
+            tags.append(dg.nodes[node]['tag'])
         text.close()
-
+        print(tags)
         for t in sorted(dp.parse(['the', 'price', 'of', 'the', 'stock', 'fell'])):
              results.append(t)
 
-        rules = grammarPrint
+        #rules = grammarPrint
 
 
     return render_template('projective_graph.html', errors=errors, results=results, rules=rules, nodes = nodes)
