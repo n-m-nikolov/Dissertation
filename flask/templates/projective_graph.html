@@ -40,7 +40,13 @@
     </style>
 </head>
 <body>
-<div class="container">
+{% extends 'home.html' %}
+{% block navbar %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
     <div class="row">
         <div class="col-sm-5 col-sm-offset-1">
             <h1>Projective Dependency Parser</h1>
@@ -229,3 +235,4 @@
 <br><br>
 </body>
 </html>
+{% endblock %}
