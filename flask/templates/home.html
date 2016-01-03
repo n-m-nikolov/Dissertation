@@ -9,6 +9,11 @@
             .container {
             max-width: 1100px;
         }
+    <!-- Enlarge image on hover -->
+    .thumbnail img:hover {
+        position: relative;
+        z-index: 9999;
+        }
     </style>
 </head>
 <body>
@@ -51,8 +56,8 @@
 
       <div class="row featurette">
         <div class="col-md-7">
-          <h2 class="featurette-heading" align="center">What is Dependency Parsing?</h2>
-          <p class="lead">Dependency Parsing is basically the process of parsing natural language to a Dependency Tree. There are two ways of achieving this goal – by using <i>constituency grammar</i> or <i>dependency grammar</i>. The main difference between the two is that in dependency grammar for every word or morph in the sentence there is <b>exactly one single node</b> corresponding to it, where as in constituency grammar we can have <b>one or more</b> nodes corresponding to the same word or morph. Here we will be using only <b>Dependency Grammar</b>.</p>
+          <h2 class="featurette-heading" align="center">What is Dependency Parsing</h2>
+          <p class="lead">Dependency Parsing is basically the process of parsing natural language to a Dependency Tree. There are two ways of achieving this goal – by using <i>constituency grammar</i> or <i>dependency grammar</i>. The main difference between the two is that in a dependency grammar for every word or morph in the sentence there is <b>exactly one single node</b> corresponding to it, where as in a constituency grammar we can have <b>one or more</b> nodes corresponding to the same word or morph. Here we will be using only <b>Dependency Grammar</b>.</p>
         </div>
         <div class="col-md-5">
           <img class="featurette-image img-responsive center-block" src="/static/Choice.jpg" alt="Generic placeholder image">
@@ -63,11 +68,31 @@
 
       <div class="row featurette">
         <div class="col-md-7 col-md-push-5">
-          <h2 class="featurette-heading">Oh yeah, it's that good. <span class="text-muted">See for yourself.</span></h2>
-          <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+          <h2 class="featurette-heading" align="center">Different ways of visualizing dependency trees</h2>
+          <p class="lead">Conventions can vary! There are many different ways we can use Dependency Parsing to visualize dependencies. In Dependency Grammars the root is always the verb and we can see this in the pictures. Pictures [1] through [7] showcase some of the different approaches that can be used. Some of them are in the form of the trees, other look more like a graph than a tree, or as shown in pictures [7] and [4] we can focus on the hierarchical order of the words, even with the connections omitted like in the case of [7]. Even though picture [4] looks like a tree, dependency trees reflect the actual word order of the sentence.  Pictures [1] through [3] are dependency trees, however they differ in the amount of information represented. Picture [1] displays not only the words, but also the part of speech tokens for each word. The technique in in picture [6] is rarely used, however it is another way of giving the words a hierarchical order (children nodes are enclosed in more brackets than their parent nodes). The representation we will be using is shown in picture [5].</p>
         </div>
         <div class="col-md-5 col-md-pull-7">
-          <img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
+            <div class="thumbnail">
+                <img class="featurette-image img-responsive center-block" src="/static/Tree1.jpg">
+            </div>
+            <div class="thumbnail">
+                <img class="featurette-image img-responsive center-block" src="/static/Tree2.jpg" alt="Generic placeholder image">
+            </div>
+            <div class="thumbnail">
+                <img class="featurette-image img-responsive center-block" src="/static/Tree3.jpg" alt="Generic placeholder image">
+            </div>
+            <div class="thumbnail">
+                <img class="featurette-image img-responsive center-block" src="/static/Tree4.jpg" alt="Generic placeholder image">
+            </div>
+            <div class="thumbnail">
+                <img class="featurette-image img-responsive center-block" src="/static/Tree5.jpg" alt="Generic placeholder image">
+            </div>
+            <div class="thumbnail">
+                <img class="featurette-image img-responsive center-block" src="/static/Tree6.jpg" alt="Generic placeholder image">
+            </div>
+            <div class="thumbnail">
+                <img class="featurette-image img-responsive center-block" src="/static/Tree7.jpg" alt="Generic placeholder image">
+            </div>
         </div>
       </div>
 
@@ -99,8 +124,8 @@
 
 {% endblock %}
 
-<script src="static/d3.min.js"></script>
-<script src="static/script.js"></script>
+<script src="/static/d3.min.js"></script>
+<script src="/static/script.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script type="text/javascript" src="/static/bootstrap.min.js"></script>
 </body>
