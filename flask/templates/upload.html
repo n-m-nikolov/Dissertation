@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
   <head>
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"
           rel="stylesheet">
   </head>
   <body>
+{% extends "home.html" %}
+{% block navbar %}
+    {{ super() }}
     <div class="container">
       <div class="header">
         <h3 class="text-muted">How To Upload a File</h3>
@@ -20,3 +24,4 @@
     </div>
   </body>
 </html>
+{% endblock %}
