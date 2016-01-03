@@ -12,6 +12,7 @@ from nltk.parse import (
                         ProjectiveDependencyParser,
                         NonprojectiveDependencyParser,
                         )
+from flask_bootstrap import Bootstrap
 
 
 app = Flask(__name__)
