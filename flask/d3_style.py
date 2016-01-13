@@ -13,6 +13,8 @@ from nltk.parse import (
                         NonprojectiveDependencyParser,
                         )
 from flask_bootstrap import Bootstrap
+#Reader for ConllFiles
+from nltk.corpus.reader.conll import ConllCorpusReader as reader
 
 
 app = Flask(__name__)
@@ -226,3 +228,4 @@ def uploaded_file(filename):
 app.run()
 url_for('static', filename='projective_tree.json')
 url_for('static', filename='non_projective_tree.json')
+url_for('static', filename='miserables.json')
