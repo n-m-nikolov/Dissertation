@@ -8,19 +8,23 @@ import requests
 import re
 from nltk.grammar import DependencyGrammar
 from nltk.parse import (
-                        DependencyGraph,
-                        ProjectiveDependencyParser,
-                        NonprojectiveDependencyParser,
-                        )
+    DependencyGraph,
+    ProjectiveDependencyParser,
+    NonprojectiveDependencyParser,
+)
 from flask_bootstrap import Bootstrap
-#Reader for ConllFiles
+# Reader for ConllFiles
 from nltk.corpus.reader.conll import ConllCorpusReader as reader
-
+#Imports for Testing
+from nltk.corpus import dependency_treebank
 
 app = Flask(__name__)
 app.debug = True
 
-
+#Add remove punctuation function to dependency graph object
+def remove_punct(self):
+    print(self.nodes);
+DependencyGraph.remove_punct = remove_punct
 
 @app.route('/tokenizer', methods=['GET', 'POST'])
 def tokenizer():
@@ -41,7 +45,7 @@ def tokenizer():
                 "Unable to get Sentence. Please make sure it's valid and try again."
             )
             errors.append(e)
-           # check the form with: errors.append(request.form)
+            # check the form with: errors.append(request.form)
         if sentence:
             nltk.data.path.append('./nltk_data/')
             tokens = nltk.word_tokenize(sentence)
@@ -56,15 +60,18 @@ def tokenizer():
             punct_results = nonPunctText
     return render_template('tokenize.html', errors=errors, results=results, punct_results=punct_results)
 
+
 @app.route('/dependency', methods=['GET', 'POST'])
 def dependency():
     return render_template('dependency.html')
+
 
 #TO DO: Create separate pages for selecting a grammar and for parsing with the selected grammar
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
     return render_template('home.html')
+
 
 @app.route('/projective_tree', methods=['GET', 'POST'])
 def proj_tree():
@@ -88,10 +95,11 @@ def non_projective():
                 "Unable to get Sentence. Please make sure it's valid and try again."
             )
             errors.append(e)
-           # check the form with: errors.append(request.form)
+            # check the form with: errors.append(request.form)
 
         nltk.data.path.append('./nltk_data/')
-        grammarPrint = ["\'taught\' -> \'play\' | \'man\'", "\'man\' -> \'the\'", "\'play\' -> \'golf\' | \'dog\' | \'to\'", "\'dog\' -> \'his\'"  ]
+        grammarPrint = ["\'taught\' -> \'play\' | \'man\'", "\'man\' -> \'the\'",
+                        "\'play\' -> \'golf\' | \'dog\' | \'to\'", "\'dog\' -> \'his\'"]
         grammar = nltk.DependencyGrammar.fromstring("\n".join(grammarPrint))
         dp = nltk.NonprojectiveDependencyParser(grammar)
         g, = dp.parse(['the', 'man', 'taught', 'his', 'dog', 'to', 'play', 'golf'])
@@ -102,7 +110,8 @@ def non_projective():
         rules = grammarPrint
         results.append(g.tree())
 
-    return render_template('non_projective_tree_version.html', errors=errors, results=results, rules=rules, nodes = nodes)
+    return render_template('non_projective_tree_version.html', errors=errors, results=results, rules=rules, nodes=nodes)
+
 
 @app.route('/dependency/projective_tree_version', methods=['GET', 'POST'])
 def projective():
@@ -121,19 +130,20 @@ def projective():
                 "Unable to get Sentence. Please make sure it's valid and try again."
             )
             errors.append(e)
-           # check the form with: errors.append(request.form)
+            # check the form with: errors.append(request.form)
 
         nltk.data.path.append('./nltk_data/')
-        grammarPrint = ["\'fell\' -> \'price\' | \'stock\'", "\'price\' -> \'of\' \'the\'", "\'of\' -> \'stock\'", "\'stock' -> 'the\'" ]
+        grammarPrint = ["\'fell\' -> \'price\' | \'stock\'", "\'price\' -> \'of\' \'the\'", "\'of\' -> \'stock\'",
+                        "\'stock' -> 'the\'"]
         grammar = nltk.DependencyGrammar.fromstring("\n".join(grammarPrint))
         dp = nltk.ProjectiveDependencyParser(grammar)
         for t in sorted(dp.parse(['the', 'price', 'of', 'the', 'stock', 'fell'])):
-             results.append(t)
+            results.append(t)
 
         rules = grammarPrint
 
+    return render_template('projective_tree_version.html', errors=errors, results=results, rules=rules, nodes=nodes)
 
-    return render_template('projective_tree_version.html', errors=errors, results=results, rules=rules, nodes = nodes)
 
 @app.route('/dependency/projective_graph', methods=['GET', 'POST'])
 def projective_graph():
@@ -155,35 +165,48 @@ def projective_graph():
                 "Unable to get Sentence. Please make sure it's valid and try again."
             )
             errors.append(e)
-           # check the form with: errors.append(request.form)
+            # check the form with: errors.append(request.form)
         #folder for ntlk
         nltk.data.path.append('./nltk_data/')
         #code for TREE implementation, grammar rules to be printed
-        grammarPrint = ["\'fell\' -> \'price\' | \'stock\'", "\'price\' -> \'of\' \'the\'", "\'of\' -> \'stock\'", "\'stock' -> 'the\'" ]
+        grammarPrint = ["\'fell\' -> \'price\' | \'stock\'", "\'price\' -> \'of\' \'the\'", "\'of\' -> \'stock\'",
+                        "\'stock' -> 'the\'"]
         #the grammar rules for nltk
         grammar_rules = nltk.DependencyGrammar.fromstring("\n".join(grammarPrint))
         dp = nltk.ProjectiveDependencyParser(grammar_rules)
 
-        text = open(app.config['UPLOAD_FOLDER']+'treebank_data.txt', 'r')
+        text = open(app.config['UPLOAD_FOLDER'] + 'treebank_data.txt', 'r')
         #errors.append(text)
         for line in text:
             grammar = grammar + line
         grammar = grammar[3:-3]
-        dg = DependencyGraph(grammar)
-        for node in dg.nodes:                       #For each node in the graph aquire the needed information
-            tags.append(dg.nodes[node]['tag'])      #tags
-            words.append(dg.nodes[node]['word'])    #words
+        #extract the sentence from the ConLL file to remove punctuation
+        for line in grammar.split('\n'):
+            sentence += line.split(' ', 1)[0] + " "
 
+        #remove trailing space character
+        sentence.strip()
+        #Tokenize the sentence and remove punctuation
+        tokens = nltk.word_tokenize(sentence)
+        no_punct_sent = nltk.Text(tokens)
+        nonPunctRegEx = re.compile('.*[A-Za-z].*')
+        nonPunctText = [w for w in no_punct_sent if nonPunctRegEx.match(w)]
+        #print(nonPunctText.to_conll(3))
+        dg = DependencyGraph(grammar)
+        print(remove_punct(dg))
+        for node in dg.nodes:  #For each node in the graph aquire the needed information
+            tags.append(dg.nodes[node]['tag'])  #tags
+            words.append(dg.nodes[node]['word'])  #words
         text.close()
-        print(words)
+
         for t in sorted(dp.parse(['the', 'price', 'of', 'the', 'stock', 'fell'])):
-             results.append(t)
+            results.append(t)
 
         #rules = grammarPrint
 
 
-    return render_template('projective_graph.html', errors=errors, results=results, rules=rules, nodes = nodes)
-#CREDIT: http://code.runnable.com/UiPcaBXaxGNYAAAL/how-to-upload-a-file-to-the-server-in-flask-for-python
+    return render_template('projective_graph.html', errors=errors, results=results, rules=rules,
+                       nodes=nodes)  #CREDIT: http://code.runnable.com/UiPcaBXaxGNYAAAL/how-to-upload-a-file-to-the-server-in-flask-for-python
 #FOR UPLOADING FILES
 
 # This is the path to the upload directory
@@ -196,9 +219,11 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
 
+
 @app.route('/upload', methods=['GET', 'POST'])
 def render_upload():
     return render_template('upload.html')
+
 
 # Route that will process the file upload
 @app.route('/uploaded', methods=['POST'])
@@ -217,6 +242,7 @@ def upload():
         return redirect(url_for('uploaded_file',
                                 filename=filename))
 
+
 # This route is expecting a parameter containing the name
 # of a file. Then it will locate that file on the upload
 # directory and show it on the browser, so if the user uploads
@@ -225,7 +251,10 @@ def upload():
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'],
                                filename)
+
+
 app.run()
 url_for('static', filename='projective_tree.json')
 url_for('static', filename='non_projective_tree.json')
 url_for('static', filename='miserables.json')
+
