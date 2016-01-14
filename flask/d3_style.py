@@ -215,11 +215,12 @@ def upload():
     grammar = ""
     tags = []
     words = []  #words extracted from the graph
+    #json skeleton
+    json_file = {}
+    names = []
+    links = []
     # Get the name of the uploaded file
     file = request.files['file']
-    print(file)
-    import inspect
-    print(inspect.getmembers(file, predicate=inspect.ismethod))
     # Check if the file is one of the allowed types
     if file and allowed_file(file.filename):
         # Make the filename safe, remove unsupported chars
@@ -245,17 +246,27 @@ def upload():
         nonPunctText = [w for w in no_punct_sent if nonPunctRegEx.match(w)]
         #print(nonPunctText.to_conll(3))
         dg = DependencyGraph(grammar)
-        print(remove_punct(dg))
         for node in dg.nodes:  #For each node in the graph aquire the needed information
+            #skip root node
+            if dg.nodes[node]["address"] == 0:
+                continue
             tags.append(dg.nodes[node]['tag'])  #tags
             words.append(dg.nodes[node]['word'])  #words
+            #skip link for the root - verb
+            if dg.nodes[node]["head"] == 0:
+                continue
+            links.append({"source":dg.nodes[node]["address"], "target":dg.nodes[node]["head"], "value":3})
+        #fill the json skeleton parts - nodes and links with the information from the dependency graph
+        for word in words:
+            nodes.append({"name":word, "group":1})
+        json_file["nodes"] = nodes
+        json_file["links"] = links
+        json_file = json.dumps(json_file)
         text.close()
-        print(grammar)
         os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         # Redirect the user to the uploaded_file route, which
         # will basicaly show on the browser the uploaded file
-        return redirect(url_for('uploaded_file',
-                                filename=filename))
+        return render_template('dependency_graph.html', json_file=json_file)
 
 
 # This route is expecting a parameter containing the name

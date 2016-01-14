@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <script>
+        var graph = '{{ json_file|safe }}';
+
+        graph = JSON.parse(graph);
+    </script>
     <title>Projective DP</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -60,9 +65,10 @@
                     var svg = d3.select("body").append("svg")
                             .attr("width", width)
                             .attr("height", height);
-
+                     console.log(graph);
                     d3.json("/static/miserables.json", function (error, graph) {
                         if (error) throw error;
+                        console.log(graph);
 
                         force
                                 .nodes(graph.nodes)
