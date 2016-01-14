@@ -91,12 +91,12 @@
                                 .attr("fill", function (d) {
                                     return color(d.group);
                                 })
-                                //When the text is changed the width of the drawn words is changed as well
+                            //When the text is changed the width of the drawn words is changed as well
                                 .on("DOMAttrModified", function (d) {
                                     d.width = this.getBBox().width;
                                     d.height = this.getBBox().height;
                                 })
-                                //When the text is created change the width on the spot
+                            //When the text is created change the width on the spot
                                 .on("DOMNodeInserted", function (d) {
                                     d.width = this.getBBox().width;
                                     d.height = this.getBBox().height;

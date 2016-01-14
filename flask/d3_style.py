@@ -175,29 +175,7 @@ def dependency_graph():
         grammar_rules = nltk.DependencyGrammar.fromstring("\n".join(grammarPrint))
         dp = nltk.ProjectiveDependencyParser(grammar_rules)
 
-        text = open(app.config['UPLOAD_FOLDER'] + 'treebank_data.txt', 'r')
-        #errors.append(text)
-        for line in text:
-            grammar = grammar + line
-        grammar = grammar[3:-3]
-        #extract the sentence from the ConLL file to remove punctuation
-        for line in grammar.split('\n'):
-            sentence += line.split(' ', 1)[0] + " "
 
-        #remove trailing space character
-        sentence.strip()
-        #Tokenize the sentence and remove punctuation
-        tokens = nltk.word_tokenize(sentence)
-        no_punct_sent = nltk.Text(tokens)
-        nonPunctRegEx = re.compile('.*[A-Za-z].*')
-        nonPunctText = [w for w in no_punct_sent if nonPunctRegEx.match(w)]
-        #print(nonPunctText.to_conll(3))
-        dg = DependencyGraph(grammar)
-        print(remove_punct(dg))
-        for node in dg.nodes:  #For each node in the graph aquire the needed information
-            tags.append(dg.nodes[node]['tag'])  #tags
-            words.append(dg.nodes[node]['word'])  #words
-        text.close()
 
         for t in sorted(dp.parse(['the', 'price', 'of', 'the', 'stock', 'fell'])):
             results.append(t)
@@ -228,15 +206,52 @@ def render_upload():
 # Route that will process the file upload
 @app.route('/uploaded', methods=['POST'])
 def upload():
+    #definitions
+    errors = []
+    results = []
+    sentence = ""
+    rules = {}
+    nodes = []
+    grammar = ""
+    tags = []
+    words = []  #words extracted from the graph
     # Get the name of the uploaded file
     file = request.files['file']
-    # Check if the file is one of the allowed types/extensions
+    print(file)
+    import inspect
+    print(inspect.getmembers(file, predicate=inspect.ismethod))
+    # Check if the file is one of the allowed types
     if file and allowed_file(file.filename):
         # Make the filename safe, remove unsupported chars
         filename = secure_filename(file.filename)
         # Move the file form the temporal folder to
         # the upload folder we setup
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+        text = open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'r')
+        #errors.append(text)
+        for line in text:
+            grammar = grammar + line
+        grammar = grammar[3:-3]
+        #extract the sentence from the ConLL file to remove punctuation
+        for line in grammar.split('\n'):
+            sentence += line.split(' ', 1)[0] + " "
+        #remove trailing space character
+        sentence.strip()
+        #Tokenize the sentence and remove punctuation
+        tokens = nltk.word_tokenize(sentence)
+        no_punct_sent = nltk.Text(tokens)
+        nonPunctRegEx = re.compile('.*[A-Za-z].*')
+        nonPunctText = [w for w in no_punct_sent if nonPunctRegEx.match(w)]
+        #print(nonPunctText.to_conll(3))
+        dg = DependencyGraph(grammar)
+        print(remove_punct(dg))
+        for node in dg.nodes:  #For each node in the graph aquire the needed information
+            tags.append(dg.nodes[node]['tag'])  #tags
+            words.append(dg.nodes[node]['word'])  #words
+        text.close()
+        print(grammar)
+        os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         # Redirect the user to the uploaded_file route, which
         # will basicaly show on the browser the uploaded file
         return redirect(url_for('uploaded_file',
