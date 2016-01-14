@@ -145,7 +145,7 @@ def projective():
     return render_template('projective_tree_version.html', errors=errors, results=results, rules=rules, nodes=nodes)
 
 
-@app.route('/dependency/dependency _graph', methods=['GET', 'POST'])
+@app.route('/dependency/dependency_graph', methods=['GET', 'POST'])
 def dependency_graph():
     errors = []
     results = []
