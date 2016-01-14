@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Projective DP</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <style>
+        .container {
+            max-width: 1000px;
+        }
+
+        .node {
+            stroke-width: 1.5px;
+
+        }
+
+        .link {
+            stroke: #999;
+            stroke-opacity: .6;
+        }
+
+    </style>
+</head>
+<body>
+{% extends 'home.html' %}
+{% block navbar %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-5 col-sm-offset-1">
+                <h1>Projective Dependency Parser</h1>
+                <br>
+
+                <form role="form" method="POST" action="">
+                    <div class="form-group">
+                        <h2><b>The price of the stock fell.</b></h2>
+                    </div>
+                    <button type="submit" class="btn btn-default">Parse</button>
+                </form>
+                <br>
+                <script src="//d3js.org/d3.v3.min.js"></script>
+
+
+                <script src="//d3js.org/d3.v3.min.js"></script>
+                <script>
+
+                    var width = 960,
+                            height = 500;
+
+                    var color = d3.scale.category20();
+
+                    var force = d3.layout.force()
+                            .charge(-120)
+                            .linkDistance(30)
+                            .size([width, height]);
+
+                    var svg = d3.select("body").append("svg")
+                            .attr("width", width)
+                            .attr("height", height);
+
+                    d3.json("/static/miserables.json", function (error, graph) {
+                        if (error) throw error;
+
+                        force
+                                .nodes(graph.nodes)
+                                .links(graph.links)
+                                .start();
+
+                        var link = svg.selectAll(".link")
+                                .data(graph.links)
+                                .enter().append("line")
+                                .attr("class", "link")
+                                .style("stroke-width", function (d) {
+                                    return Math.sqrt(d.value);
+                                });
+
+                        var node = svg.selectAll(".node")
+                                .data(graph.nodes)
+                                .enter().append("text")
+                                .attr("class", "node")
+                                .text(function (d) {
+                                    //d.width = this.getBBox().width;
+                                    //d.height = this.getBBox().height;
+                                    return d.name;
+
+                                })
+                                .attr("font-size", "12px")
+                                .attr("fill", function (d) {
+                                    return color(d.group);
+                                })
+                                //When the text is changed the width of the drawn words is changed as well
+                                .on("DOMAttrModified", function (d) {
+                                    d.width = this.getBBox().width;
+                                    d.height = this.getBBox().height;
+                                })
+                                //When the text is created change the width on the spot
+                                .on("DOMNodeInserted", function (d) {
+                                    d.width = this.getBBox().width;
+                                    d.height = this.getBBox().height;
+                                })
+                                .call(force.drag);
+
+                        node.append("title")
+                                .text(function (d) {
+                                    return d.name;
+                                });
+
+                        force.on("tick", function () {
+                            link.attr("x1", function (d) {
+                                return d.source.x;
+                            })
+                                    .attr("y1", function (d) {
+                                        return d.source.y;
+                                    })
+                                    .attr("x2", function (d) {
+                                        return d.target.x;
+                                    })
+                                    .attr("y2", function (d) {
+                                        return d.target.y;
+                                    });
+
+                            node.attr("x", function (d) {
+                                return d.x - 0.5 * d.width;
+                            })
+                                    .attr("y", function (d) {
+                                        return d.y;
+                                    });
+                        });
+                    });
+
+                </script>
+                <br>
+                {% for error in errors %}
+                    <h4>{{ error }}</h4>
+                {% endfor %}
+                <br>
+                {% if results %}
+                    <br>
+                    <div id="results">
+                        <h4>Result From Parse</h4>
+                        <br>
+                        <table class="table table-striped" style="max-width: 350px;">
+
+                            {% for result in results %}
+                                <tr>
+                                    <td>{{ result }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                {% endif %}
+
+            </div>
+            <div class="col-sm-5 col-sm-offset-1">
+                {% if rules %}
+                    <h2>Information</h2>
+                    <br>
+                    <div id="results">
+                        <h4>Dependency Grammar with 7 productions</h4>
+                        <table class="table table-striped" style="max-width: 250px;">
+
+                            {% for rule in rules %}
+                                <tr>
+                                    <td>{{ rule }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                {% endif %}
+                {% if nodes %}
+                    <br>
+                    <h4>Nodes</h4>
+                    <div id="results">
+                        <table class="table table-striped" style="max-width: 150px;">
+                            {% for node in nodes %}
+                                <tr>
+                                    <td>{{ node }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <br><br>
+    </body>
+    </html>
+{% endblock %}
