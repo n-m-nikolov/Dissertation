@@ -145,8 +145,8 @@ def projective():
     return render_template('projective_tree_version.html', errors=errors, results=results, rules=rules, nodes=nodes)
 
 
-@app.route('/dependency/projective_graph', methods=['GET', 'POST'])
-def projective_graph():
+@app.route('/dependency/dependency _graph', methods=['GET', 'POST'])
+def dependency_graph():
     errors = []
     results = []
     sentence = ""
@@ -205,7 +205,7 @@ def projective_graph():
         #rules = grammarPrint
 
 
-    return render_template('projective_graph.html', errors=errors, results=results, rules=rules,
+    return render_template('dependency_graph.html', errors=errors, results=results, rules=rules,
                        nodes=nodes)  #CREDIT: http://code.runnable.com/UiPcaBXaxGNYAAAL/how-to-upload-a-file-to-the-server-in-flask-for-python
 #FOR UPLOADING FILES
 
