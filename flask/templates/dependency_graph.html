@@ -53,7 +53,7 @@
                 <script>
 
                     var width = 960,
-                            height = 500;
+                    height = 500;
 
                     var color = d3.scale.category20();
 
@@ -67,77 +67,97 @@
                             .attr("height", height);
 
                     //d3.json(dependency, function (error, graph) {
-                       // if (error) throw error;
-                        console.log(graph);
+                    // if (error) throw error;
+                    console.log(graph);
 
 
-                        force
-                                .nodes(graph.nodes)
-                                .links(graph.links)
-                                .start();
+                    force
+                            .nodes(graph.nodes)
+                            .links(graph.links)
+                            .start();
 
-                        var link = svg.selectAll(".link")
-                                .data(graph.links)
-                                .enter().append("line")
-                                .attr("class", "link")
-                                .style("stroke-width", function (d) {
-                                    return Math.sqrt(d.value);
+                    var link = svg.selectAll(".link")
+                            .data(graph.links)
+                            .enter().append("line")
+                            .attr("class", "link")
+                            .style("marker-end", "url(#suit)") // Modified line FOR ARROWS
+                            .style("stroke-width", function (d) {
+                                return Math.sqrt(d.value);
+                            });
+                    //Arrows code
+                    svg.append("defs").selectAll("marker")
+                            .data(["suit", "licensing", "resolved"])
+                            .enter().append("marker")
+                            .attr("id", function (d) {
+                                return d;
+                            })
+                            .attr("viewBox", "0 -5 10 10")
+                            .attr("refX", 11)
+                            .attr("refY", 0)
+                            .attr("markerWidth", 6)
+                            .attr("markerHeight", 6)
+                            .attr("orient", "auto")
+                            .append("path")
+                            .attr("d", "M0,-5L10,0L0,5 L10,0 L0, -5")
+                            .style("stroke", "#4679BD")
+                            .style("opacity", "0.6");
+                    //Arrows Code end
+                    var node = svg.selectAll(".node")
+                            .data(graph.nodes)
+                            .enter().append("text")
+                            .attr("class", "node")
+                            .text(function (d) {
+                                //d.width = this.getBBox().width;
+                                //d.height = this.getBBox().height;
+                                return d.name;
+                            })
+                            .attr("font-size", "20px")
+                            .attr("fill", function (d) {
+                                //Override color from [return color(d.group)] to be alwasy black
+                                return d3.rgb(0, 0, 0);
+                            })
+
+                        //When the text is changed the width of the drawn words is changed as well
+                            .on("DOMAttrModified", function (d) {
+                                d.width = this.getBBox().width;
+                                d.height = this.getBBox().height;
+                            })
+                        //When the text is created change the width on the spot
+                            .on("DOMNodeInserted", function (d) {
+                                d.width = this.getBBox().width;
+                                d.height = this.getBBox().height;
+                            });
+                            //.call(force.drag);
+
+                    node.append("title")
+                            .text(function (d) {
+                                return d.name;
+                            });
+
+                    force.on("tick", function () {
+                        link.attr("x1", function (d) {
+                            return d.source.x;
+                        })
+                                .attr("y1", function (d) {
+                                    return d.source.y;
+                                })
+                                .attr("x2", function (d) {
+                                    return d.target.x;
+                                })
+                                .attr("y2", function (d) {
+                                    return d.target.y;
                                 });
 
-                        var node = svg.selectAll(".node")
-                                .data(graph.nodes)
-                                .enter().append("text")
-                                .attr("class", "node")
-                                .text(function (d) {
-                                    //d.width = this.getBBox().width;
-                                    //d.height = this.getBBox().height;
-                                    return d.name;
+                        node.attr("x", function (d) {
 
-                                })
-                                .attr("font-size", "20px")
-                                .attr("fill", function (d) {
-                                    //Override color from [return color(d.group)] to be alwasy black
-                                    return d3.rgb(0,0,0);
-                                })
-                            //When the text is changed the width of the drawn words is changed as well
-                                .on("DOMAttrModified", function (d) {
-                                    d.width = this.getBBox().width;
-                                    d.height = this.getBBox().height;
-                                })
-                            //When the text is created change the width on the spot
-                                .on("DOMNodeInserted", function (d) {
-                                    d.width = this.getBBox().width;
-                                    d.height = this.getBBox().height;
-                                })
-                                .call(force.drag);
+                            return d.x - 0.5 * d.width;
+                        })
 
-                        node.append("title")
-                                .text(function (d) {
-                                    return d.name;
+                                .attr("y", function (d) {
+                                    return d.y;
                                 });
-
-                        force.on("tick", function () {
-                            link.attr("x1", function (d) {
-                                return d.source.x;
-                            })
-                                    .attr("y1", function (d) {
-                                        return d.source.y;
-                                    })
-                                    .attr("x2", function (d) {
-                                        return d.target.x;
-                                    })
-                                    .attr("y2", function (d) {
-                                        return d.target.y;
-                                    });
-
-                            node.attr("x", function (d) {
-                                return d.x - 0.5 * d.width;
-                            })
-                                    .attr("y", function (d) {
-                                        return d.y;
-                                    });
-                        });
-                   // });
+                    });
+                    // });
 
                 </script>
                 <br>

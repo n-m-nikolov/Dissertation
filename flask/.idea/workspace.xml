@@ -39,9 +39,13 @@
       <file leaf-file-name="dependency_graph.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/dependency_graph.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.9583333" vertical-offset="1275" max-vertical-offset="3485">
-              <caret line="98" column="100" selection-start-line="98" selection-start-column="100" selection-end-line="98" selection-end-column="100" />
-              <folding />
+            <state vertical-scroll-proportion="-3.375" vertical-offset="2414" max-vertical-offset="3825">
+              <caret line="61" column="45" selection-start-line="61" selection-start-column="45" selection-end-line="61" selection-end-column="45" />
+              <folding>
+                <element signature="e#6558#6583#0#HTML" expanded="true" />
+                <element signature="e#7241#7266#0#HTML" expanded="true" />
+                <element signature="e#7770#7795#0#HTML" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -808,9 +812,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/dependency_graph.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.9583333" vertical-offset="1275" max-vertical-offset="3485">
-          <caret line="98" column="100" selection-start-line="98" selection-start-column="100" selection-end-line="98" selection-end-column="100" />
-          <folding />
+        <state vertical-scroll-proportion="-3.375" vertical-offset="2414" max-vertical-offset="3825">
+          <caret line="61" column="45" selection-start-line="61" selection-start-column="45" selection-end-line="61" selection-end-column="45" />
+          <folding>
+            <element signature="e#6558#6583#0#HTML" expanded="true" />
+            <element signature="e#7241#7266#0#HTML" expanded="true" />
+            <element signature="e#7770#7795#0#HTML" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
