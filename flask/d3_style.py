@@ -255,13 +255,14 @@ def upload():
             #skip link for the root - verb
             if dg.nodes[node]["head"] == 0:
                 continue
-            links.append({"source":dg.nodes[node]["address"], "target":dg.nodes[node]["head"], "value":3})
+            links.append({"source":dg.nodes[node]["head"]-1, "target":dg.nodes[node]["address"]-1, "value":3})
         #fill the json skeleton parts - nodes and links with the information from the dependency graph
         for word in words:
             nodes.append({"name":word, "group":1})
         json_file["nodes"] = nodes
         json_file["links"] = links
         json_file = json.dumps(json_file)
+        print(dg)
         text.close()
         os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         # Redirect the user to the uploaded_file route, which
