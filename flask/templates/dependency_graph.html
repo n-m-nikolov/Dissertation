@@ -94,9 +94,10 @@
                                     return d.name;
 
                                 })
-                                .attr("font-size", "12px")
+                                .attr("font-size", "20px")
                                 .attr("fill", function (d) {
-                                    return color(d.group);
+                                    //Override color from [return color(d.group)] to be alwasy black
+                                    return d3.rgb(0,0,0);
                                 })
                             //When the text is changed the width of the drawn words is changed as well
                                 .on("DOMAttrModified", function (d) {

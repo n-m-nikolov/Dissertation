@@ -262,7 +262,6 @@ def upload():
         json_file["nodes"] = nodes
         json_file["links"] = links
         json_file = json.dumps(json_file)
-        print(dg)
         text.close()
         os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         # Redirect the user to the uploaded_file route, which
