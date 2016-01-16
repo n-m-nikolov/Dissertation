@@ -39,12 +39,12 @@
       <file leaf-file-name="dependency_graph.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/dependency_graph.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6666667" vertical-offset="2567" max-vertical-offset="4777">
-              <caret line="167" column="30" selection-start-line="165" selection-start-column="21" selection-end-line="167" selection-end-column="30" />
+            <state vertical-scroll-proportion="0.43037975" vertical-offset="3179" max-vertical-offset="4777">
+              <caret line="197" column="44" selection-start-line="197" selection-start-column="44" selection-end-line="197" selection-end-column="44" />
               <folding>
-                <element signature="e#7515#7540#0#HTML" expanded="true" />
-                <element signature="e#8070#8095#0#HTML" expanded="true" />
-                <element signature="e#8495#8520#0#HTML" expanded="true" />
+                <element signature="e#7589#7614#0#HTML" expanded="true" />
+                <element signature="e#8144#8169#0#HTML" expanded="true" />
+                <element signature="e#8569#8594#0#HTML" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -875,12 +875,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/dependency_graph.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6666667" vertical-offset="2567" max-vertical-offset="4777">
-          <caret line="167" column="30" selection-start-line="165" selection-start-column="21" selection-end-line="167" selection-end-column="30" />
+        <state vertical-scroll-proportion="0.43037975" vertical-offset="3179" max-vertical-offset="4777">
+          <caret line="197" column="44" selection-start-line="197" selection-start-column="44" selection-end-line="197" selection-end-column="44" />
           <folding>
-            <element signature="e#7515#7540#0#HTML" expanded="true" />
-            <element signature="e#8070#8095#0#HTML" expanded="true" />
-            <element signature="e#8495#8520#0#HTML" expanded="true" />
+            <element signature="e#7589#7614#0#HTML" expanded="true" />
+            <element signature="e#8144#8169#0#HTML" expanded="true" />
+            <element signature="e#8569#8594#0#HTML" expanded="true" />
           </folding>
         </state>
       </provider>

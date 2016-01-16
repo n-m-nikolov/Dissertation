@@ -106,15 +106,15 @@
                         return d;
                     })
                     .attr("viewBox", "0 -5 10 10")
-                    .attr("refX", 11)
+                    .attr("refX", 10)
                     .attr("refY", 0)
                     .attr("markerWidth", 6)
                     .attr("markerHeight", 6)
                     .attr("orient", "auto")
                     .append("path")
                     .attr("d", "M0,-5L10,0L0,5 L10,0 L0, -5")
-                    .style("stroke", "#4679BD")
-                    .style("opacity", "0.6");
+                    .style("stroke", "#000000")
+                    .style("opacity", "1");
             //Arrows Code end
 
                     var rect = svg.append("rect")
@@ -163,11 +163,11 @@
                     var dx = d.target.x - d.source.x,
                             dy = d.target.y - d.source.y,
                             dr = Math.sqrt(dx * dx + dy * dy);
-{#                    if (d.target.x < d.source.x){#}
-{#                        return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;#}
-{#                    } else {#}
+                    if (d.target.x > d.source.x){
+                        return "M" + d.source.x + "," + (d.source.y- d.source.height+10) + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + (d.target.y- d.source.height+10);
+                    } else {
                         return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
-                   // }
+                    }
 
                 });
 
@@ -195,7 +195,7 @@
                     rect.attr("width", word["px"]);
                     rect.attr("height", word["height"]-10);
                     rect.attr("y", word["py"]-word["height"]+10);
-
+                    rect.attr("opacity", 0.1);
                     if (i != graph.nodes.length - 1) {
                         currNodePosition += word.width / 2 + nextNode.width / 2 + 10;
                     }
