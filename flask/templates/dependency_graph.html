@@ -1,14 +1,17 @@
-<!DOCTYPE html>
-<html>
-<head>
+{% extends 'home.html' %}
+{% block scripts %}
     <script>
         var graph = '{{ json_file|safe }}';
-        console.log(graph)
+        console.log(graph);
         graph = JSON.parse(graph);
     </script>
-    <title>Projective DP</title>
+{% endblock %}
+
+
+{% block styles %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet" media="screen">
+
     <style>
         .container {
             max-width: 1000px;
@@ -25,9 +28,9 @@
         }
 
     </style>
-</head>
-<body>
-{% extends 'home.html' %}
+{% endblock %}
+
+
 {% block navbar %}
     {{ super() }}
 {% endblock %}
@@ -53,7 +56,7 @@
                 <script>
 
                     var width = 960,
-                    height = 500;
+                            height = 500;
 
                     var color = d3.scale.category20();
 
@@ -68,7 +71,6 @@
 
                     //d3.json(dependency, function (error, graph) {
                     // if (error) throw error;
-                    console.log(graph);
 
 
                     force
@@ -127,7 +129,8 @@
                                 d.width = this.getBBox().width;
                                 d.height = this.getBBox().height;
                             });
-                            //.call(force.drag);
+                    //Uncomment for dragging nodes
+                    //.call(force.drag);
 
                     node.append("title")
                             .text(function (d) {
@@ -157,6 +160,21 @@
                                     return d.y;
                                 });
                     });
+                    //Position for first node
+                    var currNodePosition = graph.nodes[0].width/2 + 10;
+
+                    for (var i = 0; i<graph.nodes.length; i++){
+                        var word = graph.nodes[i];
+                        nextNode = graph.nodes[i+1];
+                        word["fixed"] = true;
+                        word["px"] = currNodePosition;
+                        word["py"] = 20;
+                        console.log(word.width);
+                        currNodePosition += word.width/2 + nextNode.width/2 + 10;
+
+                    }
+
+
                     // });
 
                 </script>
@@ -215,6 +233,5 @@
         </div>
     </div>
     <br><br>
-    </body>
-    </html>
+
 {% endblock %}
