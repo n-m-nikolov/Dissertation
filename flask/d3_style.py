@@ -278,6 +278,9 @@ def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'],
                                filename)
 
+@app.route('/test')
+def test():
+    return render_template('test.html')
 
 app.run()
 url_for('static', filename='projective_tree.json')
