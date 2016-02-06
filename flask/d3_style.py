@@ -224,7 +224,7 @@ def upload():
     file = request.files['file']
     if request.files['file'].filename == '':
         #messages.append('No file was uploaded.')
-        flash(u'You have not chosen a file to upload.', 'error')
+        flash(u'You have not chosen a file to upload!', 'error')
         return render_template('upload.html')
     # Check if the file is one of the allowed types
     if file and allowed_file(file.filename):
