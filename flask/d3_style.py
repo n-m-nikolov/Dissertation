@@ -296,4 +296,5 @@ if __name__ == "__main__":
 url_for('static', filename='projective_tree.json')
 url_for('static', filename='non_projective_tree.json')
 url_for('static', filename='miserables.json')
+url_for('static', filename='treebank_data.txt')
 
