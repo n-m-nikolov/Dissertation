@@ -1,31 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
+<head>
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"
           rel="stylesheet">
-  </head>
-  <body>
-{% extends "home.html" %}
-{% block navbar %}
-    {{ super() }}
-    {% block error_messages %}
-    {% endblock %}
-    <div class="container">
-      <div class="header">
-        <h3 class="text-muted">How To Upload a File</h3>
-      </div>
-      <hr/>
-      <div>
 
-      <form action="uploaded" method="post" enctype="multipart/form-data">
-        <input type="file" name="file"><br /><br />
-        <input type="submit" value="Upload">
-      </form>
-      </div>
-    </div>
-  </body>
-</html>
-{% endblock %}
+    <style>
+        .container {
+            max-width: 1000px;
+        }
+
+        .alert {
+            display: inline-block;
+        }
+    </style>
+</head>
+<div class="container">
+    <body>
+    {% extends "home.html" %}
+    {% block navbar %}
+        {{ super() }}
+        {% block error_messages %}
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <ul class=flashes>
+                        {% for category, message in messages %}
+                            <div class="alert alert-danger" role="alert">
+                                <li class="{{ category }}">{{ message }}</li>
+                            </div>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+        {% endblock %}
+        <div class="container">
+            <div class="header">
+                <h3 class="text-muted">How To Upload a File</h3>
+            </div>
+            <hr/>
+            <div>
+
+                <form action="uploaded" method="post" enctype="multipart/form-data">
+                    <input type="file" name="file"><br/><br/>
+                    <input type="submit" value="Upload">
+                </form>
+            </div>
+        </div>
+        </body>
+        </div>
+        </html>
+    {% endblock %}
 {% block content %}
 {% endblock %}

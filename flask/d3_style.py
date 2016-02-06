@@ -1,6 +1,6 @@
 import json
 import os
-from flask import Flask, render_template, request, url_for, redirect, send_from_directory
+from flask import Flask, render_template, request, url_for, redirect, send_from_directory, flash
 from werkzeug.utils import secure_filename
 import flask
 import nltk
@@ -208,6 +208,7 @@ def render_upload():
 def upload():
     #definitions
     errors = []
+    messages = []
     results = []
     sentence = ""
     rules = {}
@@ -222,7 +223,9 @@ def upload():
     # Get the name of the uploaded file
     file = request.files['file']
     if request.files['file'].filename == '':
-        return 'No selected file'
+        #messages.append('No file was uploaded.')
+        flash(u'You have not chosen a file to upload.', 'error')
+        return render_template('upload.html')
     # Check if the file is one of the allowed types
     if file and allowed_file(file.filename):
         # Make the filename safe, remove unsupported chars
@@ -284,7 +287,12 @@ def uploaded_file(filename):
 def test():
     return render_template('test.html')
 
-app.run()
+#Get passed the secret key error in Flask
+if __name__ == "__main__":
+    app.secret_key = 'super secret key'
+    app.config['SESSION_TYPE'] = 'filesystem'
+
+    app.run()
 url_for('static', filename='projective_tree.json')
 url_for('static', filename='non_projective_tree.json')
 url_for('static', filename='miserables.json')
