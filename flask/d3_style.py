@@ -221,6 +221,8 @@ def upload():
     links = []
     # Get the name of the uploaded file
     file = request.files['file']
+    if request.files['file'].filename == '':
+        return 'No selected file'
     # Check if the file is one of the allowed types
     if file and allowed_file(file.filename):
         # Make the filename safe, remove unsupported chars
