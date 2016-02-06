@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
-<link  rel="stylesheet" media="screen" href="{{ url_for('static', filename='bootstrap.min.css')}}"
+<link rel="stylesheet" media="screen" href="{{ url_for('static', filename='bootstrap.min.css') }}"
 <head>
-    {%  block scripts %}
+    {% block scripts %}
     {% endblock %}
     {% block styles %}
     {% endblock %}
@@ -10,13 +10,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <style>
-            .container {
+        .container {
             max-width: 1100px;
         }
-    <!-- Enlarge image on hover -->
-    .thumbnail img:hover {
-        position: relative;
-        z-index: 9999;
+
+        <!--
+        Enlarge image on hover
+
+        -->
+        .thumbnail img:hover {
+            position: relative;
+            z-index: 9999;
         }
     </style>
 </head>
@@ -24,100 +28,128 @@
 
 {% block navbar %}
     <div class="navbar-wrapper">
-      <div class="container">
+        <div class="container">
+            <nav class="navbar navbar-inverse navbar-static-top">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
 
-        <nav class="navbar navbar-inverse navbar-static-top">
-          <div class="container">
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <a class="navbar-brand" href="{{ url_for('home') }}">Home</a>
-            </div>
-            <div id="navbar" class="navbar-collapse collapse">
-              <ul class="nav navbar-nav">
-                <li class="active"><a href="{{ url_for('tokenizer') }}">Tokenization</a></li>
-                <li><a href="{{ url_for('render_upload') }}">Upload a ConLL File</a></li>
-                <li><a href="{{ url_for('dependency_graph') }}">Parse and Visualize</a></li>
-              </ul>
-            </div>
-          </div>
-        </nav>
+                    </div>
+                    <div id="navbar" class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a class="navbar-brand" href="{{ url_for('home') }}">Home</a></li>
+                            <!-- <li class="active"><a href="{{ url_for('tokenizer') }}">Tokenization</a></li> -->
+                            <li><a href="{{ url_for('render_upload') }}">Upload a ConLL File</a></li>
+                            <li><a href="{{ url_for('dependency_graph') }}">Parse and Visualize</a></li>
+                        </ul>
+                    </div>
 
-      </div>
+                </div>
+            </nav>
+
+        </div>
     </div>
 {% endblock %}
 
 {% block content %}
 
 
-      <!-- START THE FEATURETTES -->
-<div class="container">
-      <hr class="featurette-divider">
+    <!-- START THE FEATURETTES -->
+    <div class="container">
+        <hr class="featurette-divider">
 
-      <div class="row featurette">
-        <div class="col-md-7">
-          <h2 class="featurette-heading" align="center">What is Dependency Parsing</h2>
-          <p class="lead">Dependency Parsing is basically the process of parsing natural language to a Dependency Tree. There are two ways of achieving this goal – by using <i>constituency grammar</i> or <i>dependency grammar</i>. The main difference between the two is that in a dependency grammar for every word or morph in the sentence there is <b>exactly one single node</b> corresponding to it, where as in a constituency grammar we can have <b>one or more</b> nodes corresponding to the same word or morph. Here we will be using only <b>Dependency Grammar</b>.</p>
-        </div>
-        <div class="col-md-5">
-          <img class="featurette-image img-responsive center-block" src="/static/Choice.jpg" alt="Generic placeholder image">
-        </div>
-      </div>
+        <div class="row featurette">
+            <div class="col-md-7">
+                <h2 class="featurette-heading" align="center">What is Dependency Parsing</h2>
 
-      <hr class="featurette-divider">
-
-      <div class="row featurette">
-        <div class="col-md-7 col-md-push-5">
-          <h2 class="featurette-heading" align="center">Different ways of visualizing dependency trees</h2>
-          <p class="lead">The conventions can vary! There are many different ways we can use Dependency Parsing to visualize dependencies between words in a sentence. In Dependency Grammars the root is always the verb and we can see this in the pictures. Pictures [1] through [7] showcase some of the different approaches that can be used. Some of them are in the form of the trees, other look more like a graph than a tree, or as shown in pictures [7] and [4] we can focus on the hierarchical order of the words, even with the connections omitted like in the case of [7]. Even though picture [4] looks like a tree, dependency trees reflect the actual word order of the sentence.  Pictures [1] through [3] are dependency trees, however they differ in the amount of information represented. Picture [1] displays not only the words, but also the part of speech tokens for each word. The technique in in picture [6] is rarely used, however it is another way of giving the words a hierarchical order (children nodes are enclosed in more brackets than their parent nodes). The representation we will be using is shown in picture [5].</p>
-        </div>
-        <div class="col-md-5 col-md-pull-7">
-            <div class="thumbnail">
-                <img class="featurette-image img-responsive center-block" src="/static/Tree1.jpg">
+                <p class="lead">Dependency Parsing is basically the process of parsing natural language to a Dependency
+                    Tree. There are two ways of achieving this goal – by using <i>constituency grammar</i> or <i>dependency
+                        grammar</i>. The main difference between the two is that in a dependency grammar for every word
+                    or morph in the sentence there is <b>exactly one single node</b> corresponding to it, where as in a
+                    constituency grammar we can have <b>one or more</b> nodes corresponding to the same word or morph.
+                    Here we will be using only <b>Dependency Grammar</b>.</p>
             </div>
-            <div class="thumbnail">
-                <img class="featurette-image img-responsive center-block" src="/static/Tree2.jpg" alt="Generic placeholder image">
-            </div>
-            <div class="thumbnail">
-                <img class="featurette-image img-responsive center-block" src="/static/Tree3.jpg" alt="Generic placeholder image">
-            </div>
-            <div class="thumbnail">
-                <img class="featurette-image img-responsive center-block" src="/static/Tree4.jpg" alt="Generic placeholder image">
-            </div>
-            <div class="thumbnail">
-                <img class="featurette-image img-responsive center-block" src="/static/Tree5.jpg" alt="Generic placeholder image">
-            </div>
-            <div class="thumbnail">
-                <img class="featurette-image img-responsive center-block" src="/static/Tree6.jpg" alt="Generic placeholder image">
-            </div>
-            <div class="thumbnail">
-                <img class="featurette-image img-responsive center-block" src="/static/Tree7.jpg" alt="Generic placeholder image">
+            <div class="col-md-5">
+                <img class="featurette-image img-responsive center-block" src="/static/Choice.jpg"
+                     alt="Generic placeholder image">
             </div>
         </div>
-      </div>
+
+        <hr class="featurette-divider">
+
+        <div class="row featurette">
+            <div class="col-md-7 col-md-push-5">
+                <h2 class="featurette-heading" align="center">Different ways of visualizing dependency trees</h2>
+
+                <p class="lead">The conventions can vary! There are many different ways we can use Dependency Parsing to
+                    visualize dependencies between words in a sentence. In Dependency Grammars the root is always the
+                    verb and we can see this in the pictures. Pictures [1] through [7] showcase some of the different
+                    approaches that can be used. Some of them are in the form of the trees, other look more like a graph
+                    than a tree, or as shown in pictures [7] and [4] we can focus on the hierarchical order of the
+                    words, even with the connections omitted like in the case of [7]. Even though picture [4] looks like
+                    a tree, dependency trees reflect the actual word order of the sentence. Pictures [1] through [3] are
+                    dependency trees, however they differ in the amount of information represented. Picture [1] displays
+                    not only the words, but also the part of speech tokens for each word. The technique in in picture
+                    [6] is rarely used, however it is another way of giving the words a hierarchical order (children
+                    nodes are enclosed in more brackets than their parent nodes). The representation we will be using is
+                    shown in picture [5].</p>
+            </div>
+            <div class="col-md-5 col-md-pull-7">
+                <div class="thumbnail">
+                    <img class="featurette-image img-responsive center-block" src="/static/Tree1.jpg">
+                </div>
+                <div class="thumbnail">
+                    <img class="featurette-image img-responsive center-block" src="/static/Tree2.jpg"
+                         alt="Generic placeholder image">
+                </div>
+                <div class="thumbnail">
+                    <img class="featurette-image img-responsive center-block" src="/static/Tree3.jpg"
+                         alt="Generic placeholder image">
+                </div>
+                <div class="thumbnail">
+                    <img class="featurette-image img-responsive center-block" src="/static/Tree4.jpg"
+                         alt="Generic placeholder image">
+                </div>
+                <div class="thumbnail">
+                    <img class="featurette-image img-responsive center-block" src="/static/Tree5.jpg"
+                         alt="Generic placeholder image">
+                </div>
+                <div class="thumbnail">
+                    <img class="featurette-image img-responsive center-block" src="/static/Tree6.jpg"
+                         alt="Generic placeholder image">
+                </div>
+                <div class="thumbnail">
+                    <img class="featurette-image img-responsive center-block" src="/static/Tree7.jpg"
+                         alt="Generic placeholder image">
+                </div>
+            </div>
+        </div>
 
 
-      <!-- /END THE FEATURETTES -->
+        <!-- /END THE FEATURETTES -->
 
 
-      <!-- FOOTER -->
-      <footer>
-        <p class="pull-right"><a href="#">Back to top</a></p>
-        <p>&copy; 2015 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
-      </footer>
+        <!-- FOOTER -->
+        <footer>
+            <p class="pull-right"><a href="#">Back to top</a></p>
+
+            <p>&copy; 2015 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+        </footer>
 
     </div><!-- /.container -->
- </div>
+    </div>
 
 {% endblock %}
 
 <script src="/static/d3.min.js"></script>
 <script src="/static/script.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="/static/jquery.min.js"></script>
 <script type="text/javascript" src="/static/bootstrap.min.js"></script>
 </body>
 </html>
