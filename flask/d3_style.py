@@ -260,7 +260,7 @@ def upload():
             tags.append(dg.nodes[node]['tag'])  #tags
             words.append(dg.nodes[node]['word'])  #words
             #skip link for the root - verb
-            nodes.append({"name":dg.nodes[node]['word'], "group":1, "tag":dg.nodes[node]['tag']})
+            nodes.append({"name":dg.nodes[node]['word'], "group":1, "tag":dg.nodes[node]['tag'], "governor":dg.nodes[dg.nodes[node]['head']]['word'], "relation":dg.nodes[node]['rel']})
             if dg.nodes[node]["head"] == 0:
                 continue
             links.append({"source":dg.nodes[node]["head"]-1, "target":dg.nodes[node]["address"]-1, "value":3})
