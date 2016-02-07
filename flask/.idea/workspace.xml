@@ -12,7 +12,7 @@
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/flask$flask.coverage" NAME="flask Coverage Results" MODIFIED="1454873074962" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/flask$flask.coverage" NAME="flask Coverage Results" MODIFIED="1454876636289" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
@@ -29,8 +29,8 @@
       <file leaf-file-name="d3_style.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/d3_style.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.52248394" vertical-offset="3972" max-vertical-offset="5032">
-              <caret line="262" column="180" selection-start-line="262" selection-start-column="180" selection-end-line="262" selection-end-column="180" />
+            <state vertical-scroll-proportion="0.6680942" vertical-offset="3955" max-vertical-offset="5049">
+              <caret line="265" column="184" selection-start-line="265" selection-start-column="184" selection-end-line="265" selection-end-column="184" />
               <folding />
             </state>
           </provider>
@@ -39,12 +39,12 @@
       <file leaf-file-name="dependency_graph.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/dependency_graph.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-164.76923" vertical-offset="0" max-vertical-offset="5423">
-              <caret line="252" column="0" selection-start-line="252" selection-start-column="0" selection-end-line="252" selection-end-column="0" />
+            <state vertical-scroll-proportion="-5.1923075" vertical-offset="4013" max-vertical-offset="5525">
+              <caret line="244" column="91" selection-start-line="244" selection-start-column="91" selection-end-line="244" selection-end-column="91" />
               <folding>
-                <element signature="e#8163#8188#0#HTML" expanded="true" />
-                <element signature="e#8686#8711#0#HTML" expanded="true" />
-                <element signature="e#9111#9136#0#HTML" expanded="true" />
+                <element signature="e#7837#7862#0#HTML" expanded="true" />
+                <element signature="e#8360#8385#0#HTML" expanded="true" />
+                <element signature="e#8785#8810#0#HTML" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -801,20 +801,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/dependency_graph.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-164.76923" vertical-offset="0" max-vertical-offset="5423">
-          <caret line="252" column="0" selection-start-line="252" selection-start-column="0" selection-end-line="252" selection-end-column="0" />
+        <state vertical-scroll-proportion="-5.1923075" vertical-offset="4013" max-vertical-offset="5525">
+          <caret line="244" column="91" selection-start-line="244" selection-start-column="91" selection-end-line="244" selection-end-column="91" />
           <folding>
-            <element signature="e#8163#8188#0#HTML" expanded="true" />
-            <element signature="e#8686#8711#0#HTML" expanded="true" />
-            <element signature="e#9111#9136#0#HTML" expanded="true" />
+            <element signature="e#7837#7862#0#HTML" expanded="true" />
+            <element signature="e#8360#8385#0#HTML" expanded="true" />
+            <element signature="e#8785#8810#0#HTML" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/d3_style.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.52248394" vertical-offset="3972" max-vertical-offset="5032">
-          <caret line="262" column="180" selection-start-line="262" selection-start-column="180" selection-end-line="262" selection-end-column="180" />
+        <state vertical-scroll-proportion="0.6680942" vertical-offset="3955" max-vertical-offset="5049">
+          <caret line="265" column="184" selection-start-line="265" selection-start-column="184" selection-end-line="265" selection-end-column="184" />
           <folding />
         </state>
       </provider>
