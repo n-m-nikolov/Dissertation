@@ -1,11 +1,12 @@
 {% extends 'home.html' %}
 {% block scripts %}
-        <script src="//d3js.org/d3.v3.min.js"></script>
-        <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.2.min.js"></script>
-        <script src="/static/jquery.tipsy.js"></script>
+    <script src="//d3js.org/d3.v3.min.js"></script>
+
     <script>
         var graph = '{{ json_file|safe }}';
         graph = JSON.parse(graph);
+        console.log(graph);
+
     </script>
 {% endblock %}
 
@@ -30,9 +31,15 @@
             stroke-opacity: .6;
         }
 
-        .d3-tip {
-            line-height: 1;
-            color: black;
+        .tips {
+            border-color: #FFA500;
+            background-color: #000000;
+            color: #FF8C00;
+            max-width: 200px
+;
+        }
+        .tips .qtip-titlebar {
+            background-color: rgb(0, 0, 0);
         }
 
     </style>
@@ -48,176 +55,206 @@
     <div class="row">
     <div class="col-sm-5 col-sm-offset-1">
 
-        <script>
+    <script>
 
-            var width = 960,
-                    height = 500;
-
-
-            var color = d3.scale.category20();
-
-            var force = d3.layout.force()
-                    .charge(-120)
-                    .linkDistance(30)
-                    .size([width, height]);
+        var width = 960,
+                height = 500;
 
 
-            var svg = d3.select("body").append("svg")
-                    .attr("width", width)
-                    .attr("height", height);
+        var color = d3.scale.category20();
 
-            //Set up tooltip
-
-
-            force
-                    .nodes(graph.nodes)
-                    .links(graph.links)
-                    .start();
-
-            var path = svg.selectAll("path.link")
-                    .data(graph.links)
-                    .enter().append("svg:path")
-                    .attr("class", "link")
-                    .attr("x1", function (d) {
-                        return d.source.x;
-                    })
-                    .attr("y1", function (d) {
-                        return d.source.y;
-                    })
-                    .attr("x2", function (d) {
-                        return d.target.x;
-                    })
-                    .attr("y2", function (d) {
-                        return d.target.y;
-                    })
-                    .attr("fill", "none")
-                    .attr("stroke-width", 5)
-                    .style("marker-end", "url(#suit)")  // Modified line FOR ARROWS
-                    .style("stroke-width", function (d) {
-                        return Math.sqrt(d.value);
-                    });
+        var force = d3.layout.force()
+                .charge(-120)
+                .linkDistance(30)
+                .size([width, height]);
 
 
-            //IF target > source links are underneath words
-            //Arrows code
-            svg.append("defs").selectAll("marker")
-                    .data(["suit", "licensing", "resolved"])
-                    .enter().append("marker")
-                    .attr("id", function (d) {
-                        return d;
-                    })
-                    .attr("viewBox", "0 -5 10 10")
-                    .attr("refX", 10)
-                    .attr("refY", 0)
-                    .attr("markerWidth", 6)
-                    .attr("markerHeight", 6)
-                    .attr("orient", "auto")
-                    .append("path")
-                    .attr("d", "M0,-5L10,0L0,5 L10,0 L0, -5")
-                    .style("stroke", "#000000")
-                    .style("opacity", "1");
-            //Arrows Code end
+        var svg = d3.select("body").append("svg")
+                .attr("width", width)
+                .attr("height", height);
 
-            var rect = svg.append("rect")
-                    .attr("x", 0)
-                    .attr("y", 0)
-                    .attr("width", 0)
-                    .attr("height", 0)
-                    .attr("fill", "white");
+        //Set up tooltip
 
-            var node = svg.selectAll(".node")
-                    .data(graph.nodes)
-                    .enter().append("text")
-                    .attr("id", function (d, i) {
-                        d["idNumber"] = i;
-                        return "node_" + d.idNumber;
-                    })
-                    .attr("class", "node")
-                    .text(function (d) {
-                        //d.width = this.getBBox().width;
-                        //d.height = this.getBBox().height;
-                        return d.name;
-                    })
-                    .attr("font-size", "20px")
 
-                    .attr("fill", function (d) {
-                        //Override color from [return color(d.group)] to be alwasy black
-                        return d3.rgb(0, 0, 0);
-                    })
-                    .on("DOMAttrModified", function (d) {
-                        d.width = this.getBBox().width;
-                        d.height = this.getBBox().height;
-                    })
-                    .on("DOMNodeInserted", function (d) {
-                        d.width = this.getBBox().width;
-                        d.height = this.getBBox().height;
+        force
+                .nodes(graph.nodes)
+                .links(graph.links)
+                .start();
 
-                    });
-            //Uncomment for dragging nodes
-            //.call(force.drag);
-
-            //NEW CODE FOR PATH
-            force.on("tick", tick);
-            function tick() {
-                path.attr("d", function (d) {
-
-                    var dx = d.target.x - d.source.x,
-                            dy = d.target.y - d.source.y,
-                            dr = Math.sqrt(dx * dx + dy * dy);
-                    if (d.target.x > d.source.x) {
-                        return "M" + d.source.x + "," + (d.source.y - d.source.height + 10) + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + (d.target.y - d.source.height + 10);
-                    } else {
-                        return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
-                    }
-
+        var path = svg.selectAll("path.link")
+                .data(graph.links)
+                .enter().append("svg:path")
+                .attr("class", "link")
+                .attr("x1", function (d) {
+                    return d.source.x;
+                })
+                .attr("y1", function (d) {
+                    return d.source.y;
+                })
+                .attr("x2", function (d) {
+                    return d.target.x;
+                })
+                .attr("y2", function (d) {
+                    return d.target.y;
+                })
+                .attr("fill", "none")
+                .attr("stroke-width", 5)
+                .style("marker-end", "url(#suit)")  // Modified line FOR ARROWS
+                .style("stroke-width", function (d) {
+                    return Math.sqrt(d.value);
                 });
 
 
-                node.attr("x", function (d) {
+        //IF target > source links are underneath words
+        //Arrows code
+        svg.append("defs").selectAll("marker")
+                .data(["suit", "licensing", "resolved"])
+                .enter().append("marker")
+                .attr("id", function (d) {
+                    return d;
+                })
+                .attr("viewBox", "0 -5 10 10")
+                .attr("refX", 10)
+                .attr("refY", 0)
+                .attr("markerWidth", 6)
+                .attr("markerHeight", 6)
+                .attr("orient", "auto")
+                .append("path")
+                .attr("d", "M0,-5L10,0L0,5 L10,0 L0, -5")
+                .style("stroke", "#000000")
+                .style("opacity", "1");
+        //Arrows Code end
 
-                    return d.x - 0.5 * d.width;
+        var rect = svg.append("rect")
+                .attr("x", 0)
+                .attr("y", 0)
+                .attr("width", 0)
+                .attr("height", 0)
+                .attr("fill", "white");
 
+        var node = svg.selectAll(".node")
+                .data(graph.nodes)
+                .enter().append("text")
+                .attr("id", function (d, i) {
+                    d["idNumber"] = i;
+                    return "node_" + d.idNumber;
+                })
+                .attr("tag", function (d) {
+                    return d.tag;
                 })
 
-                        .attr("y", function (d) {
-                            return d.y;
-                        });
+                .attr("class", "node")
+                .text(function (d) {
+                    //d.width = this.getBBox().width;
+                    //d.height = this.getBBox().height;
+                    return d.name;
+                })
+                .attr("font-size", "20px")
 
+                .attr("fill", function (d) {
+                    //Override color from [return color(d.group)] to be alwasy black
+                    return d3.rgb(0, 0, 0);
+                })
+                .on("DOMAttrModified", function (d) {
+                    d.width = this.getBBox().width;
+                    d.height = this.getBBox().height;
+                })
+                .on("DOMNodeInserted", function (d) {
+                    d.width = this.getBBox().width;
+                    d.height = this.getBBox().height;
 
-                //Position for first node
-                var currNodePosition = graph.nodes[0].width / 2 + 10;
+                });
+        //Uncomment for dragging nodes
+        //.call(force.drag);
 
-                for (var i = 0; i < graph.nodes.length; i++) {
-                    var word = graph.nodes[i];
-                    nextNode = graph.nodes[i + 1];
-                    word["fixed"] = true;
-                    word["px"] = currNodePosition;
-                    word["py"] = 100;
-                    rect.attr("width", word["px"]);
-                    rect.attr("height", word["height"] - 10);
-                    rect.attr("y", word["py"] - word["height"] + 10);
-                    rect.attr("opacity", 0.1);
-                    if (i != graph.nodes.length - 1) {
-                        currNodePosition += word.width / 2 + nextNode.width / 2 + 10;
-                    }
+        //NEW CODE FOR PATH
+        force.on("tick", tick);
+        function tick() {
+            path.attr("d", function (d) {
 
+                var dx = d.target.x - d.source.x,
+                        dy = d.target.y - d.source.y,
+                        dr = Math.sqrt(dx * dx + dy * dy);
+                if (d.target.x > d.source.x) {
+                    return "M" + d.source.x + "," + (d.source.y - d.source.height + 10) + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + (d.target.y - d.source.height + 10);
+                } else {
+                    return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
                 }
 
-            }
-            //When the text is changed the width of the drawn words is changed as well
-
-            //When the text is created change the width on the spot
+            });
 
 
-            node.append("title")
-                    .text(function (d) {
-                        return d.name;
+            node.attr("x", function (d) {
+
+                return d.x - 0.5 * d.width;
+
+            })
+
+                    .attr("y", function (d) {
+                        return d.y;
                     });
 
 
-            // });
+            //Position for first node
+            var currNodePosition = graph.nodes[0].width / 2 + 10;
 
-        </script>
+            for (var i = 0; i < graph.nodes.length; i++) {
+                var word = graph.nodes[i];
+                nextNode = graph.nodes[i + 1];
+                word["fixed"] = true;
+                word["px"] = currNodePosition;
+                word["py"] = 100;
+                rect.attr("width", word["px"]);
+                rect.attr("height", word["height"] - 10);
+                rect.attr("y", word["py"] - word["height"] + 10);
+                rect.attr("opacity", 0.1);
+                if (i != graph.nodes.length - 1) {
+                    currNodePosition += word.width / 2 + nextNode.width / 2 + 10;
+                }
+
+            }
+
+        }
+        //When the text is changed the width of the drawn words is changed as well
+
+        //When the text is created change the width on the spot
+
+
+        node.append("title")
+                .text(function (d) {
+                    return d.name;
+                });
+
+        //remove the native tooltips that show when you hover on each node, they will be replaced with custom one that sho more information.
+        $('.node > title').remove();
+        //Tooltip on every node
+        $('.node').each(function () { // Grab all elements with a title attribute,and set "this"
+            $(this).qtip({ //
+                style: {
+                    classes: 'tips qtip-rounded qtip-shadow'
+                },
+                content: {
+                    text: function () {
+                        // Retrieve content from ALT attribute of the $('.selector') element
+                        return  $(this).attr('class');
+                    },
+                    title: function () {
+                        // Retrieve content from ALT attribute of the $('.selector') element
+                        return "POS Tag: " + $(this).attr('tag');
+                    }
+                },
+                position: {
+                    viewport: $(window), //Prevents Qtip from drawing out of the borders of the window
+                    my: 'top center',
+                    at: 'bottom center'
+                }
+            });
+        });
+
+
+        // });
+
+    </script>
     <br>
     {% for error in errors %}
         <h4>{{ error }}</h4>

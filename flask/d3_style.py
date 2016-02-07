@@ -238,7 +238,9 @@ def upload():
         #errors.append(text)
         for line in text:
             grammar = grammar + line
-        grammar = grammar[3:-3]
+        #Check if the file starts with "\"" and remove them from the front and back.
+        if (grammar[1] == "\""):
+            grammar = grammar[3:-3]
         #extract the sentence from the ConLL file to remove punctuation
         for line in grammar.split('\n'):
             sentence += line.split(' ', 1)[0] + " "
@@ -258,12 +260,14 @@ def upload():
             tags.append(dg.nodes[node]['tag'])  #tags
             words.append(dg.nodes[node]['word'])  #words
             #skip link for the root - verb
+            nodes.append({"name":dg.nodes[node]['word'], "group":1, "tag":dg.nodes[node]['tag']})
             if dg.nodes[node]["head"] == 0:
                 continue
             links.append({"source":dg.nodes[node]["head"]-1, "target":dg.nodes[node]["address"]-1, "value":3})
+
         #fill the json skeleton parts - nodes and links with the information from the dependency graph
-        for word in words:
-            nodes.append({"name":word, "group":1})
+        # for word in words:
+        #     nodes.append({"name":word, "group":1})
         json_file["nodes"] = nodes
         json_file["links"] = links
         json_file = json.dumps(json_file)
@@ -297,4 +301,5 @@ url_for('static', filename='projective_tree.json')
 url_for('static', filename='non_projective_tree.json')
 url_for('static', filename='miserables.json')
 url_for('static', filename='treebank_data.txt')
-url_for('static', filename='jquery.tipsy.js')
+url_for('static', filename='jquery.qtip.min.css')
+url_for('static', filename='jquery.qtip.min.js')
