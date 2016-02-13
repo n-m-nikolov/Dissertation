@@ -20,6 +20,7 @@
         .container {
             max-width: 1000px;
         }
+
         .node {
             stroke-width: 1.5px;
 
@@ -45,11 +46,9 @@
         }
 
         .CSSTableGenerator {
-            float: left;
             margin: 0px;
             padding: 0px;
-            width: 45%;
-            box-shadow: 10px 10px 5px #888888;
+            width: 50%;
             border: 1px solid #ffffff;
 
             -moz-border-radius-bottomleft: 0px;
@@ -70,12 +69,10 @@
         }
 
         .CSSTableGenerator table {
-
             border-collapse: collapse;
             border-spacing: 0;
             width: 100%;
             height: 100%;
-            margin-left: 240px;
             padding: 0px;
         }
 
@@ -110,7 +107,7 @@
 
         .CSSTableGenerator td {
             vertical-align: middle;
-
+            box-shadow: 10px 10px 5px #888888;
             background-color: #6699cc;
 
             border: 1px solid #ffffff;
@@ -169,6 +166,21 @@
 
         .CSSTableGenerator tr:first-child td:last-child {
             border-width: 0px 0px 1px 1px;
+        }
+
+        .table1 {
+            float: left;
+            margin-left: 20px;
+        }
+
+        .table2 {
+            border: 1px solid #ffffff;
+            float: right;
+            margin-right: 20px;
+        }
+
+        .table2 table {
+            width: 100%;
         }
 
     </style>
@@ -399,136 +411,632 @@
     <br>
     <br>
     <div class="CSSTableGenerator">
-        <table>
-            <tr>
-            <td colspan="2">Part of Speech Tags</td>
-            </tr>
-            <tr>
-                <td>
-                    CC
-                </td>
-                <td>
-                   Coordinating conjunction
-                </td>
-            </tr>
-            <tr>
-                <td>
-                   CD
-                </td>
-                <td>
-                    Cardinal number
-                </td>
-            </tr>
-            <tr>
-                <td>
-                 	DT
-                </td>
-                <td>
-                    Determiner
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    EX
-                </td>
-                <td>
-                    Existential <i>there</i>
-                </td>
-            </tr>
-                        <tr>
-                <td>
-                    FW
-                </td>
-                <td>
-                    Foreign Word
-                </td>
-            </tr>
-                        <tr>
-                <td>
-                    IN
-                </td>
-                <td>
-                    Preposition or subordinating conjunction
-                </td>
-            </tr>
-                        <tr>
-                <td>
-                    JJ
-                </td>
-                <td>
-                     Adjective
-                </td>
-            </tr>
-                        <tr>
-                <td>
-                    JJR
-                </td>
-                <td>
-                    Adjective, comparative
-                </td>
-            </tr>
-                        <tr>
-                <td>
-                   JJS
-                </td>
-                <td>
-                   	Adjective, superlative
-                </td>
-            </tr>
-                        <tr>
-                <td>
-                    LS
-                </td>
-                <td>
-                    List item marker
-                </td>
-            </tr>
-                        <tr>
-                <td>
-                    EX
-                </td>
-                <td>
-                    Existential <i>there</i>
-                </td>
-            </tr>
-                        <tr>
-                <td>
-                    	MD
-                </td>
-                <td>
-                    Modal
-                </td>
-            </tr>
-                        <tr>
-                <td>
-                    NN
-                </td>
-                <td>
-                Noun, singular or mass
-                </td>
-            </tr>
-                        <tr>
-                <td>
-                    NNS
-                </td>
-                <td>
-                    Noun, plural
-                </td>
-            </tr>
-                        <tr>
-                <td>
-                    NNP
-                </td>
-                <td>
-                    Proper noun, singular
-                </td>
-            </tr>
-
-        </table>
+    <div class="table1">
+    <table class="CSSTableGenerator">
+    <tr>
+        <td colspan="2">Part of Speech Tags</td>
+    </tr>
+    <tr>
+        <td>
+            CC
+        </td>
+        <td>
+            Coordinating conjunction
+        </td>
+    </tr>
+    <tr>
+        <td>
+            CD
+        </td>
+        <td>
+            Cardinal number
+        </td>
+    </tr>
+    <tr>
+        <td>
+            DT
+        </td>
+        <td>
+            Determiner
+        </td>
+    </tr>
+    <tr>
+        <td>
+            EX
+        </td>
+        <td>
+            Existential <i>there</i>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            FW
+        </td>
+        <td>
+            Foreign Word
+        </td>
+    </tr>
+    <tr>
+        <td>
+            IN
+        </td>
+        <td>
+            Preposition or subordinating conjunction
+        </td>
+    </tr>
+    <tr>
+        <td>
+            JJ
+        </td>
+        <td>
+            Adjective
+        </td>
+    </tr>
+    <tr>
+        <td>
+            JJR
+        </td>
+        <td>
+            Adjective, comparative
+        </td>
+    </tr>
+    <tr>
+        <td>
+            JJS
+        </td>
+        <td>
+            Adjective, superlative
+        </td>
+    </tr>
+    <tr>
+        <td>
+            LS
+        </td>
+        <td>
+            List item marker
+        </td>
+    </tr>
+    <tr>
+        <td>
+            EX
+        </td>
+        <td>
+            Existential <i>there</i>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            MD
+        </td>
+        <td>
+            Modal
+        </td>
+    </tr>
+    <tr>
+        <td>
+            NN
+        </td>
+        <td>
+            Noun, singular or mass
+        </td>
+    </tr>
+    <tr>
+        <td>
+            NNS
+        </td>
+        <td>
+            Noun, plural
+        </td>
+    </tr>
+    <tr>
+        <td>
+            NNP
+        </td>
+        <td>
+            Proper noun, singular
+        </td>
+    </tr>
+    <tr>
+        <td>
+            NNPS
+        </td>
+        <td>
+            Proper noun, plural
+        </td>
+    </tr>
+    <tr>
+        <td>
+            PDT
+        </td>
+        <td>
+            Predeterminer
+        </td>
+    </tr>
+    <tr>
+        <td>
+            POS
+        </td>
+        <td>
+            Possessive ending
+        </td>
+    </tr>
+    <tr>
+        <td>
+            PRP
+        </td>
+        <td>
+            Personal pronoun
+        </td>
+    </tr>
+    <tr>
+        <td>
+            PRP$
+        </td>
+        <td>
+            Possessive pronoun
+        </td>
+    </tr>
+    <tr>
+        <td>
+            RB
+        </td>
+        <td>
+            Adverb
+        </td>
+    </tr>
+    <tr>
+        <td>
+            RBR
+        </td>
+        <td>
+            Adverb, comparative
+        </td>
+    </tr>
+    <tr>
+        <td>
+            RBS
+        </td>
+        <td>
+            Adverb, superlative
+        </td>
+    </tr>
+    <tr>
+        <td>
+            RP
+        </td>
+        <td>
+            Particle
+        </td>
+    </tr>
+    <tr>
+        <td>
+            SYM
+        </td>
+        <td>
+            Symbol
+        </td>
+    </tr>
+    <tr>
+        <td>
+            TO
+        </td>
+        <td>
+            <i>to</i>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            UH
+        </td>
+        <td>
+            Interjection
+        </td>
+    </tr>
+    <tr>
+        <td>
+            VB
+        </td>
+        <td>
+            Verb, base form
+        </td>
+    </tr>
+    <tr>
+        <td>
+            VBD
+        </td>
+        <td>
+            Verb, past tense
+        </td>
+    </tr>
+    <tr>
+        <td>
+            VBG
+        </td>
+        <td>
+            Verb, gerund or present participle
+        </td>
+    </tr>
+    <tr>
+        <td>
+            VBN
+        </td>
+        <td>
+            Verb, past participle
+        </td>
+    </tr>
+    <tr>
+        <td>
+            VBP
+        </td>
+        <td>
+            Verb, non-3rd person singular present
+        </td>
+    </tr>
+    <tr>
+        <td>
+            VBZ
+        </td>
+        <td>
+            Verb, 3rd person singular present
+        </td>
+    </tr>
+    <tr>
+        <td>
+            WDT
+        </td>
+        <td>
+            Wh-determiner
+        </td>
+    </tr>
+    <tr>
+        <td>
+            WP
+        </td>
+        <td>
+            Wh-pronoun
+        </td>
+    </tr>
+    <tr>
+        <td>
+            WP$
+        </td>
+        <td>
+            Possessive wh-pronoun
+        </td>
+    </tr>
+    <tr>
+        <td>
+            WRB
+        </td>
+        <td>
+            Wh-adverb
+        </td>
+    </tr>
+    </table>
+    </div>
     </div>
 
 
+    <div class="table2">
+    <table class="CSSTableGenerator">
+    <tr>
+        <td colspan="2">Relation Types</td>
+    </tr>
+    <tr>
+        <td>
+            ADV
+        </td>
+        <td>
+            Unclassified adverbial
+        </td>
+    </tr>
+    <tr>
+        <td>
+            BNF
+        </td>
+        <td>
+            Benefactor (the <i>for</i> phrase for verbs <br> that undergo dative shift)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            DIR
+        </td>
+        <td>
+            Direction
+        </td>
+    </tr>
+    <tr>
+        <td>
+            DTV
+        </td>
+        <td>
+            Dative (the <i>to</i> phrase for verbs <br> that undergo dative shift)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            EXT
+        </td>
+        <td>
+            Extent
+        </td>
+    </tr>
+    <tr>
+        <td>
+            LGS
+        </td>
+        <td>
+            Logical subject
+        </td>
+    </tr>
+    <tr>
+        <td>
+            LOC
+        </td>
+        <td>
+            Location
+        </td>
+    </tr>
+    <tr>
+        <td>
+            MNR
+        </td>
+        <td>
+            Manner
+        </td>
+    </tr>
+    <tr>
+        <td>
+            PRD
+        </td>
+        <td>
+            Predicative complement
+        </td>
+    </tr>
+    <tr>
+        <td>
+            PRP
+        </td>
+        <td>
+            Purpose or reason
+        </td>
+    </tr>
+    <tr>
+        <td>
+            PUT
+        </td>
+        <td>
+            Various locative complements <br> of the verb <i>put</i>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            SBJ
+        </td>
+        <td>
+            Subject
+        </td>
+    </tr>
+    <tr>
+        <td>
+            TMP
+        </td>
+        <td>
+            Temporal
+        </td>
+    </tr>
+    <tr>
+        <td>
+            VOC
+        </td>
+        <td>
+            Vocative
+        </td>
+    </tr>
+    <tr>
+        <td>
+            APPO
+        </td>
+        <td>
+            Apposition
+        </td>
+    </tr>
+    <tr>
+        <td>
+            HMOD
+        </td>
+        <td>
+            Modifier in hyphenation,<br> such as two in two-part
+        </td>
+    </tr>
+    <tr>
+        <td>
+            HYPH
+        </td>
+        <td>
+            Between first part of hyphenation <br> and hyphen
+        </td>
+    </tr>
+    <tr>
+        <td>
+            NAME
+        </td>
+        <td>
+            Name-internal link
+        </td>
+    </tr>
+    <tr>
+        <td>
+            POSTHON
+        </td>
+        <td>
+            Posthonorifics such as <i>Jr, Inc</i>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            SUFFIX
+        </td>
+        <td>
+            Possessive <i>’s</i>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            TITLE
+        </td>
+        <td>
+            Titles such as <i>Mr, Dr</i>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            AMOD
+        </td>
+        <td>
+            Modifier of adjective or adverb
+        </td>
+    </tr>
+    <tr>
+        <td>
+            CONJ
+        </td>
+        <td>
+            Between conjunction and second <br> conjunct in a coordination
+        </td>
+    </tr>
+    <tr>
+        <td>
+            COORD
+        </td>
+        <td>
+            Coordination
+        </td>
+    </tr>
+    <tr>
+        <td>
+            DEP
+        </td>
+        <td>
+            Unclassified relation
+        </td>
+    </tr>
+    <tr>
+        <td>
+            EXTR
+        </td>
+        <td>
+            Extraposed element in <br> expletive constructions
+        </td>
+    </tr>
+    <tr>
+        <td>
+            GAP
+        </td>
+        <td>
+            Gapping: between conjunction <br> and the parts of a structure <br> with an ellipsed head
+        </td>
+    </tr>
+    <tr>
+        <td>
+            IM
+        </td>
+        <td>
+            Between infinitive marker and verb
+        </td>
+    </tr>
+    <tr>
+        <td>
+            VBD
+        </td>
+        <td>
+            Verb, past tense
+        </td>
+    </tr>
+    <tr>
+        <td>
+            NMOD
+        </td>
+        <td>
+            Modifier of nominal
+        </td>
+    </tr>
+    <tr>
+        <td>
+            OBJ
+        </td>
+        <td>
+            Direct or indirect object <br> or clause complement
+        </td>
+    </tr>
+    <tr>
+        <td>
+            OPRD
+        </td>
+        <td>
+            Object complement
+        </td>
+    </tr>
+    <tr>
+        <td>
+            P (or punct sign)
+        </td>
+        <td>
+            Punctuation
+        </td>
+    </tr>
+    <tr>
+        <td>
+            PMOD
+        </td>
+        <td>
+            Between preposition and <br> its child in a PP
 
+        </td>
+    </tr>
+    <tr>
+        <td>
+            PRN
+        </td>
+        <td>
+            Parenthetical
+        </td>
+    </tr>
+    <tr>
+        <td>
+            PRT
+        </td>
+        <td>
+            Particle
+        </td>
+    </tr>
+    <tr>
+        <td>
+            ROOT
+        </td>
+        <td>
+            Root of sentence
+        </td>
+    </tr>
+    <tr>
+        <td>
+            SUB
+        </td>
+        <td>
+            Between subordinating <br> conjunction and verb
+        </td>
+    </tr>
+    <tr>
+        <td>
+            VC
+        </td>
+        <td>
+           Verb chain
+        </td>
+    </tr>
+    </table>
+    </div>
     <br><br>
 
 {% endblock %}
