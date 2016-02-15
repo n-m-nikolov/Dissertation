@@ -238,10 +238,11 @@ def upload():
         #errors.append(text)
         for line in text:
             grammar = grammar + line
-        #Check if the file starts with "\"" and remove them from the front and back.
-        if (grammar[1] == "\""):
+        #Check if the file starts and ends with three "\"" and remove them from the front and back.
+        if (grammar[0] == "\"" and grammar[1] == "\"" and grammar[2] == "\"" and grammar[-1] == "\"" and grammar[-2] == "\"" and grammar[-3] == "\""):
             grammar = grammar[3:-3]
         #extract the sentence from the ConLL file to remove punctuation
+
         for line in grammar.split('\n'):
             sentence += line.split(' ', 1)[0] + " "
         #remove trailing space character
