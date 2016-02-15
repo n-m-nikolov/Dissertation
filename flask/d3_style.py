@@ -2,28 +2,21 @@ import json
 import os
 from flask import Flask, render_template, request, url_for, redirect, send_from_directory, flash
 from werkzeug.utils import secure_filename
-import flask
 import nltk
-import requests
 import re
-from nltk.grammar import DependencyGrammar
 from nltk.parse import (
     DependencyGraph,
     ProjectiveDependencyParser,
     NonprojectiveDependencyParser,
 )
-from flask_bootstrap import Bootstrap
-# Reader for ConllFiles
-from nltk.corpus.reader.conll import ConllCorpusReader as reader
-#Imports for Testing
-from nltk.corpus import dependency_treebank
+
 
 app = Flask(__name__)
 app.debug = True
 
 #Add remove punctuation function to dependency graph object
 def remove_punct(self):
-    print(self.nodes);
+    print(self.nodes)
 DependencyGraph.remove_punct = remove_punct
 
 @app.route('/tokenizer', methods=['GET', 'POST'])
@@ -252,7 +245,6 @@ def upload():
         no_punct_sent = nltk.Text(tokens)
         nonPunctRegEx = re.compile('.*[A-Za-z].*')
         nonPunctText = [w for w in no_punct_sent if nonPunctRegEx.match(w)]
-        #print(nonPunctText.to_conll(3))
         dg = DependencyGraph(grammar)
         for node in dg.nodes:  #For each node in the graph aquire the needed information
             #skip root node
@@ -297,11 +289,10 @@ def test():
 if __name__ == "__main__":
     app.secret_key = 'super secret key'
     app.config['SESSION_TYPE'] = 'filesystem'
-
     app.run()
-url_for('static', filename='projective_tree.json')
-url_for('static', filename='non_projective_tree.json')
-url_for('static', filename='miserables.json')
-url_for('static', filename='treebank_data.txt')
-url_for('static', filename='jquery.qtip.min.css')
-url_for('static', filename='jquery.qtip.min.js')
+# url_for('static', filename='projective_tree.json')
+# url_for('static', filename='non_projective_tree.json')
+# url_for('static', filename='miserables.json')
+# url_for('static', filename='treebank_data.txt')
+# url_for('static', filename='jquery.qtip.min.css')
+# url_for('static', filename='jquery.qtip.min.js')
