@@ -1,6 +1,6 @@
 import json
 import os
-from flask import Flask, render_template, request, url_for, redirect, send_from_directory, flash
+from flask import Flask, render_template, request, url_for, redirect, send_from_directory, flash, current_app
 from werkzeug.utils import secure_filename
 import nltk
 import re
@@ -11,7 +11,23 @@ from nltk.parse import (
 )
 
 
-app = Flask(__name__)
+
+
+
+app = Flask(__name__, static_folder='s1245947/static/')
+
+f1 = open('./siteerror.txt','w+')
+try:
+    url_for('static', filename='/s1245947/static/projective_tree.json')
+    url_for('static', filename='/s1245947/static/non_projective_tree.json')
+    url_for('static', filename='/s1245947/static/miserables.json')
+    url_for('static', filename='/s1245947/static/treebank_data.txt')
+    url_for('static', filename='/s1245947/static/jquery.qtip.min.css')
+    url_for('static', filename='/s1245947/static/jquery.qtip.min.js')
+except Exception as e:
+    f1.write(str(e))
+
+
 app.debug = True
 
 #Add remove punctuation function to dependency graph object
@@ -181,7 +197,9 @@ def dependency_graph():
 #FOR UPLOADING FILES
 
 # This is the path to the upload directory
-app.config['UPLOAD_FOLDER'] = 'C:/dissertation/Dissertation/flask/uploads/'
+#app.config['UPLOAD_FOLDER'] = 'C:/dissertation/Dissertation/flask/uploads/'
+app.config['UPLOAD_FOLDER'] = '/public/homepages/s1245947/data/'
+
 # These are the extension that we are accepting to be uploaded
 app.config['ALLOWED_EXTENSIONS'] = set(['txt', 'json'])
 
@@ -201,7 +219,7 @@ def render_upload():
 def upload():
     #definitions
     errors = []
-    messages = []
+    messages = []  # within this block, current_app points to app.
     results = []
     sentence = ""
     rules = {}
@@ -231,7 +249,7 @@ def upload():
         #errors.append(text)
         for line in text:
             grammar = grammar + line
-        #Check if the file starts and ends with three "\"" and remove them from the front and back.
+        #Check if the file starts and ends with three "\"" and remove them from th  # within this block, current_app points to app.e front and back.
         if (grammar[0] == "\"" and grammar[1] == "\"" and grammar[2] == "\"" and grammar[-1] == "\"" and grammar[-2] == "\"" and grammar[-3] == "\""):
             grammar = grammar[3:-3]
         #extract the sentence from the ConLL file to remove punctuation
@@ -241,10 +259,10 @@ def upload():
         #remove trailing space character
         sentence.strip()
         #Tokenize the sentence and remove punctuation
-        tokens = nltk.word_tokenize(sentence)
-        no_punct_sent = nltk.Text(tokens)
-        nonPunctRegEx = re.compile('.*[A-Za-z].*')
-        nonPunctText = [w for w in no_punct_sent if nonPunctRegEx.match(w)]
+        #tokens = nltk.word_tokenize(sentence)
+        #no_punct_sent = nltk.Text(tokens)
+        #nonPunctRegEx = re.compile('.*[A-Za-z].*')
+        #nonPunctText = [w for w in no_punct_sent if nonPunctRegEx.match(w)]
         dg = DependencyGraph(grammar)
         for node in dg.nodes:  #For each node in the graph aquire the needed information
             #skip root node
@@ -290,9 +308,4 @@ if __name__ == "__main__":
     app.secret_key = 'super secret key'
     app.config['SESSION_TYPE'] = 'filesystem'
     app.run()
-# url_for('static', filename='projective_tree.json')
-# url_for('static', filename='non_projective_tree.json')
-# url_for('static', filename='miserables.json')
-# url_for('static', filename='treebank_data.txt')
-# url_for('static', filename='jquery.qtip.min.css')
-# url_for('static', filename='jquery.qtip.min.js')
+
