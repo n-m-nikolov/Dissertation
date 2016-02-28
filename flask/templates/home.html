@@ -16,17 +16,22 @@
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <style>
         .container {
-            max-width: 1100px;
+            width: 100%;
         }
 
-        <!--
-        Enlarge image on hover
-
-        -->
         .thumbnail img:hover {
             position: relative;
             z-index: 9999;
         }
+       .navbar .navbar-nav {
+  display: inline-block;
+  float: none;
+  vertical-align: top;
+}
+
+.navbar .navbar-collapse {
+  text-align: center;
+}
     </style>
 </head>
 <body>
@@ -34,7 +39,7 @@
 {% block navbar %}
     <div class="navbar-wrapper">
         <div class="container">
-            <nav class="navbar navbar-inverse navbar-static-top">
+            <nav class="navbar navbar-inverse navbar-static-top ">
                 <div class="container">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
@@ -48,10 +53,10 @@
                     </div>
                     <div id="navbar" class="navbar-collapse collapse">
                         <ul class="nav navbar-nav">
-                            <li class="active"><a class="navbar-brand" href="{{ url_for('home') }}">Home</a></li>
+                            <li><a class="navbar-brand" href="{{ url_for('home') }}">Home</a></li>
                             <!-- <li class="active"><a href="{{ url_for('tokenizer') }}">Tokenization</a></li> -->
-                            <li><a href="{{ url_for('render_upload') }}">Upload a ConLL File</a></li>
-                            <li><a href="{{ url_for('dependency_graph') }}">Parse and Visualize</a></li>
+                            <li><a class="navbar-brand" href="{{ url_for('render_upload') }}">Upload a ConLL File</a></li>
+                            <!--<li><a href="{{ url_for('dependency_graph') }}">Parse and Visualize</a></li> -->
                         </ul>
                     </div>
 

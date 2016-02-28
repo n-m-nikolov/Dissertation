@@ -1,33 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'home.html' %}
+{% block scripts %}
+
+
 
 <head>
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"
           rel="stylesheet">
-
+{% endblock %}
+  {% block styles %}
     <style>
         .container {
-            max-width: 1000px;
+            width: 100%;
         }
 
         .alert {
             display: inline-block;
         }
     </style>
+{% endblock %}
 </head>
 <div class="container">
     <body>
-    {% extends "home.html" %}
     {% block navbar %}
         {{ super() }}
         {% block error_messages %}
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
+                  <div class="container">
                     <ul class=flashes>
                         {% for category, message in messages %}
                             <div class="alert alert-danger" role="alert">
                                 <li class="{{ category }}">{{ message }}</li>
                             </div>
+                          </div>
                         {% endfor %}
                     </ul>
                 {% endif %}

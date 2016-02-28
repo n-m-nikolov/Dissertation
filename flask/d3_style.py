@@ -303,9 +303,11 @@ def uploaded_file(filename):
 def test():
     return render_template('test.html')
 
+
+#Fix secret key error, for alert message, when user tries to upload NO file
+app.secret_key = 'super secret key'
+app.config['SESSION_TYPE'] = 'filesystem'
 #Get passed the secret key error in Flask
 if __name__ == "__main__":
-    app.secret_key = 'super secret key'
-    app.config['SESSION_TYPE'] = 'filesystem'
     app.run()
 
