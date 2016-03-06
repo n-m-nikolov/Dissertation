@@ -16,6 +16,11 @@
         .alert {
             display: inline-block;
         }
+      
+
+	#fileButton{
+	background-color: blue;
+	}
     </style>
 {% endblock %}
 </head>
@@ -68,7 +73,9 @@
                         frameborder="0" onLoad="autoResize('iframe1');"></iframe>
                 <br>
                   <p>
-                    A sample file, containing the exaple, can be downloaded <a href="{{ url_for('download', filename='Sample.txt') }}">here.</a>
+                 
+                    This sample file can be downloaded from here: <form action="{{ url_for('download', filename='Sample.txt') }}" method="GET"> <button type="submit" class= "btn btn-success btn-primary">Download</button> 
+                    </form>
                     <br>
                    <b>Note that the spacing between the coulmns should be a tabulation.</b>
                   </p>
@@ -80,11 +87,17 @@
             <div>
 
                 <form action="uploaded" method="post" enctype="multipart/form-data">
-                    <input type="file" name="file"><br/><br/>
-                    <input type="submit" value="Upload">
+                    <input type="file" name="file" class="filestyle" data-input="false" data-buttonName="btn-primary"><br/><br/>
+                    <input type="submit" value="Upload" class="btn btn-primary btn-lg">
                 </form>
             </div>
         </div>
+          <script>
+          $("#file-upload-button").change(function () {
+          var fileName = $(this).val().replace('C:\\fakepath\\', '');
+          $("#file-upload-filename").html(fileName);
+          });
+          </script>
         </body>
         </div>
         </html>
