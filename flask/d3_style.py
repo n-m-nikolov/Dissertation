@@ -16,16 +16,17 @@ from nltk.parse import (
 
 app = Flask(__name__, static_folder='s1245947/static/')
 
+#A file in which site errors will be written, because the server has no visible error messages.
 f1 = open('./siteerror.txt','w+')
-try:
-    url_for('static', filename='/s1245947/static/projective_tree.json')
-    url_for('static', filename='/s1245947/static/non_projective_tree.json')
-    url_for('static', filename='/s1245947/static/miserables.json')
-    url_for('static', filename='/s1245947/static/treebank_data.txt')
-    url_for('static', filename='/s1245947/static/jquery.qtip.min.css')
-    url_for('static', filename='/s1245947/static/jquery.qtip.min.js')
-except Exception as e:
-    f1.write(str(e))
+#try:
+    #url_for('static', filename='/s1245947/static/projective_tree.json')
+    #url_for('static', filename='/s1245947/static/non_projective_tree.json')
+    #url_for('static', filename='/s1245947/static/miserables.json')
+    #url_for('static', filename='/s1245947/static/treebank_data.txt')
+    #url_for('static', filename='/s1245947/static/jquery.qtip.min.css')
+    #url_for('static', filename='/s1245947/static/jquery.qtip.min.js')
+#except Exception as e:
+    #f1.write(str(e))
 
 
 app.debug = True
@@ -263,32 +264,43 @@ def upload():
         #no_punct_sent = nltk.Text(tokens)
         #nonPunctRegEx = re.compile('.*[A-Za-z].*')
         #nonPunctText = [w for w in no_punct_sent if nonPunctRegEx.match(w)]
+        
+        
+        ##Try to parse the file passed by the upload page. If not possible raise an error
+        f1.write(grammar)
         dg = DependencyGraph(grammar)
-        for node in dg.nodes:  #For each node in the graph aquire the needed information
-            #skip root node
-            if dg.nodes[node]["address"] == 0:
-                continue
-            tags.append(dg.nodes[node]['tag'])  #tags
-            words.append(dg.nodes[node]['word'])  #words
-            #skip link for the root - verb
-            if dg.nodes[node]["head"] == 0:
-                nodes.append({"name":dg.nodes[node]['word'], "group":1, "tag":dg.nodes[node]['tag'], "governor":"ROOT", "relation":dg.nodes[node]['rel']})
-                continue
-            nodes.append({"name":dg.nodes[node]['word'], "group":1, "tag":dg.nodes[node]['tag'], "governor":dg.nodes[dg.nodes[node]['head']]['word'], "relation":dg.nodes[node]['rel']})
-            links.append({"source":dg.nodes[node]["head"]-1, "target":dg.nodes[node]["address"]-1, "value":3})
-
-        #fill the json skeleton parts - nodes and links with the information from the dependency graph
-        # for word in words:
-        #     nodes.append({"name":word, "group":1})
-        json_file["nodes"] = nodes
-        json_file["links"] = links
-        json_file = json.dumps(json_file)
-        text.close()
-        os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        # Redirect the user to the uploaded_file route, which
-        # will basicaly show on the browser the uploaded file
-        return render_template('dependency_graph.html', json_file=json_file)
-
+        try:
+            dg = DependencyGraph(grammar)
+            for node in dg.nodes:  #For each node in the graph aquire the needed information
+                #skip root node
+                if dg.nodes[node]["address"] == 0:
+                    continue
+                tags.append(dg.nodes[node]['tag'])  #tags
+                words.append(dg.nodes[node]['word'])  #words
+                #skip link for the root - verb
+                if dg.nodes[node]["head"] == 0:
+                    nodes.append({"name":dg.nodes[node]['word'], "group":1, "tag":dg.nodes[node]['tag'], "governor":"ROOT", "relation":dg.nodes[node]['rel']})
+                    continue
+                nodes.append({"name":dg.nodes[node]['word'], "group":1, "tag":dg.nodes[node]['tag'], "governor":dg.nodes[dg.nodes[node]['head']]['word'], "relation":dg.nodes[node]['rel']})
+                links.append({"source":dg.nodes[node]["head"]-1, "target":dg.nodes[node]["address"]-1, "value":3})
+        
+                #fill the json skeleton parts - nodes and links with the information from the dependency graph
+                # for word in words:
+                #     nodes.append({"name":word, "group":1})
+            json_file["nodes"] = nodes
+            json_file["links"] = links
+            json_file = json.dumps(json_file)
+            text.close()
+            os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            # Redirect the user to the uploaded_file route, which
+            # will basicaly show on the browser the uploaded file
+            return render_template('dependency_graph.html', json_file=json_file)
+        except Exception as e:
+                text.close()
+                os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                f1.write(str(e))
+                flash(u'Wrong file formatting! Pleace check the spacing between the rows of the ConLL grammar file.', 'error')
+                return render_template('upload.html')
 
 # This route is expecting a parameter containing the name
 # of a file. Then it will locate that file on the upload

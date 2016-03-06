@@ -8,6 +8,13 @@
         console.log(graph);
 
     </script>
+        <script>
+    //Resize the navigation bar according to the size of the svg
+    $(document).ready(function (){ 
+    $('.container').width($('svg')[0].getBoundingClientRect().width)
+    console.log($('svg'));
+    });
+    </script> 
 {% endblock %}
 
 
@@ -182,11 +189,13 @@
         .table2 table {
             width: 100%;
         }
+
         svg {
         display: block;
         margin-top: 10%;
         margin: auto;
         }
+
 
     </style>
 {% endblock %}
@@ -202,8 +211,8 @@
 
     <script>
 
-    var width = 960,
-            height = 500;
+    var width = 1500, //Previous Value 960
+        height = 800; //Previous Value 500
 
 
     var color = d3.scale.category20();
@@ -242,19 +251,20 @@
             .attr("y2", function (d) {
                 return d.target.y;
             })
-			
+          
             .attr("fill", "none")
             .attr("stroke-width", 5)
-            .style("marker-end", "url(#suit)")  // Modified line FOR ARROWS
+            //.style("marker-end", "url(#suit)") // Modified line FOR ARROWS
             .style("stroke-width", function (d) {
                 return 1;
             });
 
-
+		
     //IF target > source links are underneath words
     //Arrows code
+	//Arrows for bottom links
     svg.append("defs").selectAll("marker")
-            .data(["suit", "licensing", "resolved"])
+            .data(["lower"])
             .enter().append("marker")
             .attr("id", function (d) {
                 return d;
@@ -268,7 +278,24 @@
             .append("path")
             .attr("d", "M0,-5L10,0L0,5 L10,0 L0, -5")
             .style("stroke", "#000000")
-            .style("opacity", "1");
+            .style("opacity", "1")
+	//Arrows for Upper Links
+		    svg.append("defs").selectAll("marker")
+            .data(["upper"])
+            .enter().append("marker")
+            .attr("id", function (d) {
+                return d;
+            })
+            .attr("viewBox", "10 -5 10 10")
+            .attr("refX", 10)
+            .attr("refY", 0)
+            .attr("markerWidth", 6)
+            .attr("markerHeight", 6)
+            .attr("orient", "auto")
+            .append("path")
+            .attr("d", "M20,-5L10,0L20,5 L10,0 L20, -5")
+            .style("stroke", "#000000")
+            .style("opacity", "1")
     //Arrows Code end
 
     var rect = svg.append("rect")
@@ -328,7 +355,12 @@
 		graph.nodes[graph.links[i].source.idNumber].outgoingLinks = [graph.links[i].target.idNumber];
 		}
 		}
+    //Dynamically change the size of the svg depending on the number of the nodes
+    svg.style("width", graph.nodes.length *60)
+    //document.container("width", svg.width)
     //NEW CODE FOR PATH
+
+
     force.on("tick", tick);
     function tick() {
         path.attr("d", function (d) {
@@ -351,16 +383,7 @@
             if (i != graph.nodes.length - 1) {
                 currNodePosition += word.width / 2 + nextNode.width / 2 + 10;
             }
-			//extract the minimum and maximum distance between two nodes in the graph
-		//	for (var j = 0; j < i; j++){
-		//		distanceBetweenNodes = Math.abs(graph.nodes[i].x - graph.nodes[j].x)
-		//		if (minDistanceBetweenNodes > distanceBetweenNodes || minDistanceBetweenNodes === -1){
-		//		minDistanceBetweenNodes = distanceBetweenNodes;
-		//		} 
-		//		if (maxDistanceBetweenNodes < distanceBetweenNodes){
-		//		maxDistanceBetweenNodes = distanceBetweenNodes;
-		//		}
-		//	}
+
 
         }
 			
@@ -373,27 +396,37 @@
 					distanceFromNode = (Math.abs(d.target.idNumber - d.source.idNumber) - minDistanceBetweenNodes)/ (maxDistanceBetweenNodes - minDistanceBetweenNodes) * 300 + 50
 						
 			numberOfOutgoingLinks =  d.source.outgoingLinks.length;
-			//invert the index so that the shortest link starts closest to the center of the word and substract 1 so that we have 0 indexing. if d.target.x<d.source.x add 1;
+			//invert the index so that the shortest link starts closest to the center of the word
 			invertIndexOfLinkInList = d.source.outgoingLinks.length - d.source.outgoingLinks.indexOf(d.target.idNumber) - 1;
 			startDrawPoint =  (invertIndexOfLinkInList / numberOfOutgoingLinks) * (d.source.width*0.5) + d.source.x;
 			//console.log(startDrawPont);
 
             if (d.target.x > d.source.x) {
-					verticalLineHight = d.source.y - d.source.height*0.5 + (distanceFromNode);
+					verticalLineHight = d.source.y - d.source.height*0.5 + (distanceFromNode)*(numberOfOutgoingLinks*(1.5/numberOfOutgoingLinks));
 				//	console.log("First Case: " +  " M " + d.source.x + "," + (d.source.y - d.source.height + 20) + " V " + (~~(-verticalLineHight)) + " H " + d.target.x + " V " + (d.target.y - d.target.height*0.5))
 //                 return "M" + d.source.x + "," + (d.source.y - d.source.height + 10) + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + (d.target.y - d.source.height + 10);
-                   return "M " + startDrawPoint + "," + (d.source.y + 5) + " V " + verticalLineHight + " H " + (d.target.x - 0.25*d.target.width)  + " V " + (d.target.y + 5); // custom drawn path, that looks like a normal dependecy graph representation rather than using arcs
+                   return "M " + startDrawPoint + "," + (d.source.y + 5) + " V " + verticalLineHight + " H " + (d.target.x - 0.25*d.target.width)  + " V " + (d.target.y + 5); // custom drawn path, that looks like a normal dependecy x representation rather than using arcs
+                  
             } else {
 				  verticalLineHight = d.source.y + d.source.height*0.5 - (distanceFromNode);
+					//svg.selectAll("marker").attr("transform", "translate(" +(d.target.x + d.target.width*0.25) + "," + 	 (d.target.y - d.target.height+10) + ")")				
 				//  console.log("Second Case: " + " M " + d.source.x + "," + (d.source.y - d.source.height + 20) + " V " + (~~(verticalLineHight)) + " H " + d.target.x + " V " + (d.target.y + d.target.height*0.5))
 //                return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
-				  return "M " + (startDrawPoint - d.source.width*0.5 + (1/numberOfOutgoingLinks) * (d.source.width*0.5)) + "," + (d.source.y - d.source.height+10) + " V " + verticalLineHight + " H " + (d.target.x + 0.25*d.target.width)  + " V " + (d.target.y - d.target.height*0.5 - 5);
-				 
-//                 M start-x, start-y A radius-x, radius-y, x-axis-rotation, large-arc-flag, sweep-flag, end-x, end-y
+//REAL CODE          return "M " + (startDrawPoint - d.source.width*0.5 + (1/numberOfOutgoingLinks) * (d.source.width*0.5)) + "," + (d.source.y - d.source.height+10) + " V " + verticalLineHight + " H " + (d.target.x + 0.25*d.target.width)  +" V " + (d.target.y - d.target.height*0.5 - 5);
+                  //reversed path for upper links
+                  return "M " + (d.target.x + d.target.width*0.25)  + "," + (d.target.y - d.target.height+10)  + " V " +( d.target.y + d.target.height*0.5 - ((Math.abs(d.source.idNumber - d.target.idNumber) - minDistanceBetweenNodes)/ (maxDistanceBetweenNodes - minDistanceBetweenNodes) * 300 + 50))+ " H " + (d.source.x - 0.15*d.source.width  + invertIndexOfLinkInList*6) + "V"+ (d.source.y - d.source.height*0.5 - 5 ) ;
+
            }
 //verticalLineHight = (d.source.y - d.source.height - ((d.target.x - d.source.x)*0.5))
         });
+      
+        //Add id to each path
+        path.attr("id", function (d,i) { return "path_" + i; })
 
+
+
+
+        
 
         node.attr("x", function (d) {
 
@@ -405,10 +438,31 @@
                     return d.y;
                 });
 
-
-
-
+	//Select the links that are underneath the nodes and put the arrows. TODO change null with new type of arrows drawn at the start of the link
+	svg.selectAll(".link").style("marker-end", function(d) { if (d.target.x > d.source.x){return "url(#lower)"}else{ return null}})
+	.style("marker-start", function(d) { if (d.target.x > d.source.x){return null }else{ return "url(#upper)"}});
     }
+
+
+            //TODO:rotate the text depending if the link's y position is higher or lower than the nodes y position
+            //Test for text on path
+            svg.selectAll("path#path_")
+               .data(graph.nodes.filter(filterRoot))
+               .enter()
+               .append("text")
+               .append("textPath")
+               .attr("font-size", "9px")
+               .attr("id", function (d,i) { return "label_" + i; })
+               .style("text-anchor","middle") 
+               .attr("startOffset", "52%")
+               .attr("xlink:href", function (d,i) {
+                    return "#path_" + i;
+                      })      
+               .text(function (d) {
+                    return d.relation;
+                                  });
+          
+        
     //When the text is changed the width of the drawn words is changed as well
 
     //When the text is created change the width on the spot
@@ -447,6 +501,14 @@
 
 
     // });
+
+    //For the lables filter the root link, since we do not draw it but we have it in the dependency graph json file.
+    function filterRoot(value) {
+        return value.relation !== "ROOT";
+    }
+
+
+	
 
     </script>
 
