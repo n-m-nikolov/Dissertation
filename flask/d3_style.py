@@ -70,6 +70,11 @@ def tokenizer():
             punct_results = nonPunctText
     return render_template('tokenize.html', errors=errors, results=results, punct_results=punct_results)
 
+@app.route('/data/<path:filename>', methods=['GET', 'POST'])
+def download(filename):
+    uploads = os.path.join(current_app.root_path, app.config['UPLOAD_FOLDER'])
+    return send_from_directory(directory=uploads, filename=filename)
+
 
 @app.route('/dependency', methods=['GET', 'POST'])
 def dependency():
@@ -78,9 +83,9 @@ def dependency():
 
 #TO DO: Create separate pages for selecting a grammar and for parsing with the selected grammar
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/home', methods=['GET', 'POST'])
 def home():
-    return render_template('home.html')
+     return render_template('home.html')
 
 
 @app.route('/projective_tree', methods=['GET', 'POST'])
@@ -210,7 +215,7 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
 
 
-@app.route('/upload', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def render_upload():
     return render_template('upload.html')
 
