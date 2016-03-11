@@ -48,8 +48,8 @@
             <div class="header">
                 <h3 class="text-muted">How To Upload a Text File</h3>
 
-                <p>To upload a text file click the <b>"Choose file"</b> button and select a file from your computer. The
-                    should be a ".txt" file and should look like this for example: </p>
+                <p>To upload a text file click the <b>"Choose file"</b> button and select a file from your computer. This
+                    should be a ".txt" file and should look as follows: </p>
 
                 <!--Taken from Stackoverflow answer: http://stackoverflow.com/questions/819416/adjust-width-height-of-iframe-to-fit-with-content-in-it -->
                 <script language="JavaScript">
@@ -77,10 +77,9 @@
                     This sample file can be downloaded from here: <form action="{{ url_for('download', filename='Sample.txt') }}" method="GET"> <button type="submit" class= "btn btn-success btn-primary">Download</button> 
                     </form>
                     <br>
-                   <b>Note that the spacing between the coulmns should be a tabulation.</b>
+                   <b>Note that the separator between the columns should be a tab.</b>
                   </p>
-                <p> This is the structure which NLTK uses to represent the grammar needed to
-                    create the dependency graph object. More information on how the process is done can be found <a href="http://www.nltk.org/howto/dependency.html">here</a>.</p>
+                <p> The data format used here is based on CoNLL 2009, and is used by NLTK dependency parser. More information on the latter can be found here: <a href="http://stackoverflow.com/questions/27416164/what-is-conll-data-format">here</a>.</p>
 
               </div>
             <hr/>
@@ -92,12 +91,6 @@
                 </form>
             </div>
         </div>
-          <script>
-          $("#file-upload-button").change(function () {
-          var fileName = $(this).val().replace('C:\\fakepath\\', '');
-          $("#file-upload-filename").html(fileName);
-          });
-          </script>
         </body>
         </div>
         </html>

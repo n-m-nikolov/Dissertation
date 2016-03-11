@@ -18,15 +18,7 @@ app = Flask(__name__, static_folder='s1245947/static/')
 
 #A file in which site errors will be written, because the server has no visible error messages.
 f1 = open('./siteerror.txt','w+')
-#try:
-    #url_for('static', filename='/s1245947/static/projective_tree.json')
-    #url_for('static', filename='/s1245947/static/non_projective_tree.json')
-    #url_for('static', filename='/s1245947/static/miserables.json')
-    #url_for('static', filename='/s1245947/static/treebank_data.txt')
-    #url_for('static', filename='/s1245947/static/jquery.qtip.min.css')
-    #url_for('static', filename='/s1245947/static/jquery.qtip.min.js')
-#except Exception as e:
-    #f1.write(str(e))
+
 
 
 app.debug = True
@@ -36,6 +28,7 @@ def remove_punct(self):
     print(self.nodes)
 DependencyGraph.remove_punct = remove_punct
 
+#Tokenizer Page - outputs sentence as tokens. Not Active
 @app.route('/tokenizer', methods=['GET', 'POST'])
 def tokenizer():
     errors = []
@@ -70,6 +63,7 @@ def tokenizer():
             punct_results = nonPunctText
     return render_template('tokenize.html', errors=errors, results=results, punct_results=punct_results)
 
+
 @app.route('/data/<path:filename>', methods=['GET', 'POST'])
 def download(filename):
     uploads = os.path.join(current_app.root_path, app.config['UPLOAD_FOLDER'])
@@ -81,8 +75,6 @@ def dependency():
     return render_template('dependency.html')
 
 
-#TO DO: Create separate pages for selecting a grammar and for parsing with the selected grammar
-
 @app.route('/home', methods=['GET', 'POST'])
 def home():
      return render_template('home.html')
@@ -92,7 +84,7 @@ def home():
 def proj_tree():
     return render_template('projective_tree.html')
 
-
+#Non Projective Dependecy Tree page. Not Active
 @app.route('/dependency/non_projective_tree_version', methods=['GET', 'POST'])
 def non_projective():
     errors = []
@@ -127,7 +119,7 @@ def non_projective():
 
     return render_template('non_projective_tree_version.html', errors=errors, results=results, rules=rules, nodes=nodes)
 
-
+#Projective Dependecy Tree page. Not Active
 @app.route('/dependency/projective_tree_version', methods=['GET', 'POST'])
 def projective():
     errors = []
@@ -321,7 +313,7 @@ def test():
     return render_template('test.html')
 
 
-#Fix secret key error, for alert message, when user tries to upload NO file
+#Fix secret key error, for error alert message, when user tries to upload NO file
 app.secret_key = 'super secret key'
 app.config['SESSION_TYPE'] = 'filesystem'
 #Get passed the secret key error in Flask
